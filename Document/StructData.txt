@@ -1,0 +1,20 @@
+
+Bảng Customer (Khách hàng): Chứa thông tin về khách hàng gồm tên, email và số điện thoại.
+
+Bảng Agency (Đại lý): Lưu trữ thông tin về đại lý bao gồm tên, email và số điện thoại.
+
+Bảng Investor (Nhà đầu tư): Chứa thông tin về nhà đầu tư bao gồm tên, email, số điện thoại và địa chỉ.
+
+Bảng Project (Dự án): Được liên kết với Nhà đầu tư thông qua khóa ngoại. Bảng này chứa thông tin về các dự án bất động sản như tên, trạng thái, ngày bắt đầu, ngày kết thúc và mô tả.
+
+Bảng Property (Bất động sản): Lưu trữ thông tin về các bất động sản, bao gồm tầng, số căn hộ, giá và mô tả. Được liên kết với Dự án thông qua khóa ngoại.
+
+Bảng OpeningForSales (Đợt mở bán): Chứa thông tin về các đợt mở bán của dự án, bao gồm ngày bắt đầu, ngày kết thúc và trạng thái.
+
+Bảng OpeningForSalesDetail (Chi tiết đợt mở bán): Liên kết các bất động sản, đại lý và đợt mở bán với nhau.
+
+Bảng Booking (Đặt cọc): Lưu thông tin về các đặt cọc bao gồm khóa ngoại đến khách hàng và đợt mở bán.
+
+Bảng Payment (Thanh toán): Chứa thông tin về thanh toán, bao gồm khóa ngoại đến đặt cọc.
+
+Bảng PaymentDetail (Chi tiết thanh toán): Lưu trữ các chi tiết cụ thể của thanh toán, bao gồm phương thức thanh toán và ghi chú.
