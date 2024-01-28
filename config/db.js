@@ -1,5 +1,8 @@
 const { Sequelize } = require("sequelize");
 const propertyModel = require("../models/property.model");
+const projectModel = require("../models/project.model");
+const itemModel = require("../models/item.model");
+const propertyItemModel = require("../models/propertyItem.model");
 require("dotenv").config();
 
 const sequelize = new Sequelize(
@@ -18,6 +21,9 @@ const sequelize = new Sequelize(
 
 const db = {};
 db.Property = propertyModel(sequelize);
+db.Project = projectModel(sequelize);
+db.Item = itemModel(sequelize);
+db.PropertyItem = propertyItemModel(sequelize);
 // sync all models with database
 sequelize.sync({ alter: true });
 

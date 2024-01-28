@@ -4,35 +4,39 @@ module.exports = model;
 
 function model(sequelize) {
   const attributes = {
-    property_id: {
+    project_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
     },
-    project_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    title: {
+    name: {
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    address: {
-      type: DataTypes.STRING(255),
+    status: {
+      type: DataTypes.STRING(20),
       allowNull: false,
     },
-    price: {
-      type: DataTypes.DECIMAL(10, 2),
+    start_date: {
+      type: DataTypes.DATE,
       allowNull: false,
     },
-    image: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
+    end_date: {
+      type: DataTypes.DATE,
+      allowNull: true,
     },
     description: {
       type: DataTypes.TEXT,
       allowNull: true,
+    },
+    investor_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "Investor",
+        key: "investor_id",
+      },
     },
   };
 
@@ -42,5 +46,5 @@ function model(sequelize) {
     timestamps: false,
   };
 
-  return sequelize.define("Property", attributes, options);
+  return sequelize.define("Project", attributes, options);
 }

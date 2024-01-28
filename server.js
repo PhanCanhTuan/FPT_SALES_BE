@@ -8,6 +8,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors()); // to enable cors
 
 app.use("/api/property", require("./controllers/property.controller"));
+app.use("/api/project", require("./controllers/project.controller"));
 
 const port = process.env.PORT || 3000;
 

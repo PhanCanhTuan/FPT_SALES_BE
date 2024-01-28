@@ -4,35 +4,19 @@ module.exports = model;
 
 function model(sequelize) {
   const attributes = {
-    property_id: {
+    propertyItem_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
     },
-    project_id: {
+    property_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    title: {
-      type: DataTypes.STRING(100),
+    item_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-    },
-    address: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    price: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
-    },
-    image: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: true,
     },
   };
 
@@ -42,5 +26,5 @@ function model(sequelize) {
     timestamps: false,
   };
 
-  return sequelize.define("Property", attributes, options);
+  return sequelize.define("PropertyItem", attributes, options);
 }

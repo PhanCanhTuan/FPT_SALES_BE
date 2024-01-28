@@ -36,27 +36,4 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Func API đặt cọc dự án
-router.post("/booking", async (req, res) => {
-  try {
-    const { property_id, username, email, message } = req.body;
-    const booking = await propertyService.bookingProperty(
-      property_id,
-      username,
-      email,
-      message
-    );
-    return res.status(200).json({
-      status: 200,
-      message: "Booking successfully",
-      data: booking,
-    });
-  } catch (error) {
-    console.log(error);
-    return res
-      .status(500)
-      .json({ statusCode: 500, error: "Something went wrong" });
-  }
-});
-
 module.exports = router;
