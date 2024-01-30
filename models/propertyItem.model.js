@@ -26,5 +26,5 @@ function model(sequelize) {
     timestamps: false,
   };
 
-  return sequelize.define("PropertyItem", attributes, options);
+  return sequelize.define("PropertyItems", attributes, options);
 }

@@ -5,6 +5,7 @@ const propertyService = require("../services/property.service");
 router.get("/", async (req, res) => {
   try {
     var properties = await propertyService.getAll();
+    // Gọi bảng project để lấy project của property và gọi bảng PropertyItem để lấy item của property đó
     res.status(200).json({
       status: 200,
       message: "Properties founded successfully",

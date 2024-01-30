@@ -9,6 +9,7 @@ app.use(cors()); // to enable cors
 
 app.use("/api/property", require("./controllers/property.controller"));
 app.use("/api/project", require("./controllers/project.controller"));
+app.use("/api/item", require("./controllers/item.controller"));
 
 const port = process.env.PORT || 3000;
 

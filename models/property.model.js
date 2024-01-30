@@ -42,5 +42,5 @@ function model(sequelize) {
     timestamps: false,
   };
 
-  return sequelize.define("Property", attributes, options);
+  return sequelize.define("Properties", attributes, options);
 }
