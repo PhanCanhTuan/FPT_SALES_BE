@@ -96,6 +96,7 @@ CREATE TABLE Booking (
     booking_id INT PRIMARY KEY,
     opening_id INT,
     customer_id INT, -- Khóa ngoại tham chiếu đến Customer
+    property_id INT, -- Khóa ngoại tham chiếu đến Customer
     email VARCHAR(100), -- Địa chỉ email của khách hàng (có thể NULL)
     phone VARCHAR(20), -- Số điện thoại của khách hàng (có thể NULL)
     booking_date DATE NOT NULL,
@@ -103,6 +104,7 @@ CREATE TABLE Booking (
     status VARCHAR(20) NOT NULL, -- Trạng thái đặt cọc
     FOREIGN KEY (opening_id) REFERENCES OpeningForSales(opening_id),
     FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)
+    FOREIGN KEY (property_id) REFERENCES Properties(property_id)
 );
 
 -- Bảng Payment (Thanh toán)
