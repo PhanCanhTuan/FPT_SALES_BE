@@ -7,7 +7,7 @@ router.post("/sendDeposit", async (req, res) => {
     var bookingDeposit = await bookingService.sendDeposit(req.body);
     res.status(200).json({
       status: 200,
-      message: "Booking deposit successfully",
+      message: "Đã gửi thông tin đặt cọc thành công",
       data: bookingDeposit,
     });
   } catch (error) {

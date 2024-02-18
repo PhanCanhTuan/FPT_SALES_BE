@@ -40,7 +40,6 @@ module.exports = (sequelize) => {
       IsSelected: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: false,
       },
     },
     {
