@@ -1,54 +1,55 @@
 const { DataTypes } = require("sequelize");
 
-module.exports = model;
+module.exports = (sequelize) => {
+  const Booking = sequelize.define(
+    "Booking",
+    {
+      BookingId: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      ProjectId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      CustomerName: {
+        type: DataTypes.STRING(255),
+        allowNull: false,
+      },
+      CustomerEmail: {
+        type: DataTypes.STRING(255),
+        allowNull: false,
+      },
+      CustomerPhoneNumber: {
+        type: DataTypes.STRING(20),
+        allowNull: false,
+      },
+      BookingDate: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      Status: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+      },
+      SelectionMethod: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+      },
+      IsSelected: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
+    },
+    {
+      freezeTableName: true,
+      timestamps: false,
+    }
+  );
 
-function model(sequelize) {
-  const attributes = {
-    booking_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    opening_id: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    property_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    customer_id: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    email: {
-      type: DataTypes.STRING(100),
-      allowNull: true, // Email can be nullable
-    },
-    phone: {
-      type: DataTypes.STRING(20),
-      allowNull: true, // Phone can be nullable
-    },
-    booking_date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    deposit_amount: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
-    },
-    status: {
-      type: DataTypes.STRING(20),
-      allowNull: false,
-    },
-  };
+  Booking.belongsTo(sequelize.models.Project, { foreignKey: "ProjectId" });
 
-  const options = {
-    freezeTableName: true,
-    // Không thêm các thuộc tính thời gian (updatedAt, createdAt)
-    timestamps: false,
-  };
-
-  return sequelize.define("Bookings", attributes, options);
-}
+  return Booking;
+};

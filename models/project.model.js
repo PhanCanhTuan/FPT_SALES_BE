@@ -1,50 +1,79 @@
+// Import Sequelize và các kiểu dữ liệu cần thiết
 const { DataTypes } = require("sequelize");
 
-module.exports = model;
-
-function model(sequelize) {
-  const attributes = {
-    project_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-    },
-    status: {
-      type: DataTypes.STRING(20),
-      allowNull: false,
-    },
-    start_date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    end_date: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    investor_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "Investor",
-        key: "investor_id",
+// Định nghĩa hàm model
+module.exports = (sequelize) => {
+  // Define model
+  const Project = sequelize.define(
+    "Project",
+    {
+      ProjectId: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      Name: {
+        type: DataTypes.STRING(255),
+        allowNull: false,
+      },
+      InvestorId: {
+        type: DataTypes.INTEGER,
+        allowNull: true, // Nếu không muốn để trống, đặt allowNull: false
+      },
+      Location: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+      },
+      Thumbnail: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+      },
+      Type: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+      },
+      NumberOfApartments: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      NumberOfShops: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      LandArea: {
+        type: DataTypes.FLOAT,
+        allowNull: true,
+      },
+      ConstructionDensity: {
+        type: DataTypes.FLOAT,
+        allowNull: true,
+      },
+      Status: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+      },
+      StartDate: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+      EndDate: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+      Description: {
+        type: DataTypes.TEXT,
+        allowNull: true,
       },
     },
-  };
+    {
+      // Options
+      freezeTableName: true,
+      timestamps: false,
+    }
+  );
 
-  const options = {
-    freezeTableName: true,
-    // Không thêm các thuộc tính thời gian (updatedAt, createdAt)
-    timestamps: false,
-  };
+  // Define quan hệ với bảng Investor
+  Project.belongsTo(sequelize.models.Investor, { foreignKey: "InvestorId" });
 
-  return sequelize.define("Projects", attributes, options);
-}
+  return Project;
+};
