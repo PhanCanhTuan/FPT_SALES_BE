@@ -30,7 +30,7 @@ const db = {};
 // db.OpeningForSales = openingForSalesModel(sequelize);
 db.Investor = investorModel(sequelize);
 db.Project = projectModel(sequelize);
-// db.Booking = bookingModel(sequelize);
+db.Booking = bookingModel(sequelize);
 
 // sync all models with database
 sequelize.sync({ alter: true });
