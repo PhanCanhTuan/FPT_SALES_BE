@@ -4,7 +4,7 @@ module.exports = model;
 
 function model(sequelize) {
   const attributes = {
-    opening_id: {
+    propertyItem_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
@@ -14,16 +14,8 @@ function model(sequelize) {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    start_date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    end_date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    status: {
-      type: DataTypes.STRING(20),
+    item_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
   };
@@ -34,5 +26,5 @@ function model(sequelize) {
     timestamps: false,
   };
 
-  return sequelize.define("OpeningForSales", attributes, options);
+  return sequelize.define("PropertyItems", attributes, options);
 }

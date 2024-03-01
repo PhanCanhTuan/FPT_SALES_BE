@@ -1,14 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const projectService = require("../services/project.service");
+const propertyService = require("../services/property.service");
 
 router.get("/", async (req, res) => {
   try {
-    var projects = await projectService.getAllProject();
+    var properties = await propertyService.getAll();
+    // Gọi bảng project để lấy project của property và gọi bảng PropertyItem để lấy item của property đó
     res.status(200).json({
       status: 200,
-      message: "Lấy toàn bộ dự án hiện có thành công",
-      data: projects,
+      message: "Properties founded successfully",
+      data: properties,
     });
   } catch (error) {
     console.log(error);
@@ -16,19 +17,18 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Lấy dự án theo project_id
 router.get("/:id", async (req, res) => {
   try {
-    var project = await projectService.getProjectById(req.params.id);
-    if (!project) {
+    var property = await propertyService.findPropertyById(req.params.id);
+    if (!property) {
       return res
         .status(404)
-        .json({ statusCode: 404, error: "Dự án không tồn tại" });
+        .json({ statusCode: 404, error: "Property Does not exist" });
     }
     return res.status(200).json({
       status: 200,
-      message: "Lấy dự án thành công",
-      data: project,
+      message: "Property founded successfully",
+      data: property,
     });
   } catch (error) {
     return res

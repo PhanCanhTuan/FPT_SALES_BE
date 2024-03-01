@@ -1,42 +1,38 @@
 const { DataTypes } = require("sequelize");
 
-module.exports = (sequelize) => {
-  const Investor = sequelize.define(
-    "Investor",
-    {
-      InvestorId: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      Name: {
-        type: DataTypes.STRING(255),
-        allowNull: true,
-      },
-      Email: {
-        type: DataTypes.STRING(255),
-        allowNull: true,
-      },
-      PhoneNumber: {
-        type: DataTypes.STRING(20),
-        allowNull: true,
-      },
-      Address: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-      },
-      UserId: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
+module.exports = model;
+
+function model(sequelize) {
+  const attributes = {
+    investorId: {
+      // Sử dụng camelCase cho tên thuộc tính trong Sequelize
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
     },
-    {
-      freezeTableName: true,
-      timestamps: false,
-    }
-  );
+    name: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+    },
+    phoneNumber: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
+    },
+    address: {
+      type: DataTypes.TEXT, // Sử dụng TEXT nếu địa chỉ có thể rất dài
+      allowNull: false,
+    },
+  };
 
-  Investor.belongsTo(sequelize.models.User, { foreignKey: "UserId" });
+  const options = {
+    freezeTableName: true,
+    timestamps: false, // Nếu không muốn thêm các cột thời gian tự động
+  };
 
-  return Investor;
-};
+  return sequelize.define("Investor", attributes, options);
+}
