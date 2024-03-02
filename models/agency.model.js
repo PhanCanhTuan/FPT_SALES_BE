@@ -1,28 +1,28 @@
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-  const OpeningForSales = sequelize.define(
-    "OpeningForSales",
+  const Agency = sequelize.define(
+    "Agency",
     {
-      OpeningForSalesId: {
+      AgencyId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      ProjectId: {
+      UserId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      StartDate: {
-        type: DataTypes.DATE,
         allowNull: true,
       },
-      EndDate: {
-        type: DataTypes.DATE,
+      Name: {
+        type: DataTypes.STRING(255),
         allowNull: true,
       },
-      Status: {
-        type: DataTypes.STRING(100),
+      Email: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+      },
+      PhoneNumber: {
+        type: DataTypes.STRING(20),
         allowNull: true,
       },
     },
@@ -32,9 +32,7 @@ module.exports = (sequelize) => {
     }
   );
 
-  OpeningForSales.belongsTo(sequelize.models.Project, {
-    foreignKey: "ProjectId",
-  });
+  Agency.belongsTo(sequelize.models.User, { foreignKey: "UserId" });
 
-  return OpeningForSales;
+  return Agency;
 };
