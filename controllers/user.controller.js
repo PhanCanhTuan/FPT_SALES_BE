@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const investorService = require("../services/investor.service");
+const userService = require("../services/user.service");
 
 router.get("/", async (req, res) => {
   try {
-    var investors = await investorService.getAllInvestor();
+    var users = await userService.getAllUser();
     res.status(200).json({
       status: 200,
-      message: "Lấy thành công tất cả nhà đầu tư",
-      data: investors,
+      message: "Lấy thành công tất cả tài khoản",
+      data: users,
     });
   } catch (error) {
     console.log(error);
