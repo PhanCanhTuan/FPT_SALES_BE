@@ -14,7 +14,17 @@
 					"name": "Lấy tất cả danh sách khách hàng",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": "{{base_url}}/api/customer"
+					},
+					"response": []
+				},
+				{
+					"name": "Lấy danh sách booking của customer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/customer/16/booking"
 					},
 					"response": []
 				}
@@ -108,7 +118,16 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{base_url}}/api/project/"
+						"url": "{{base_url}}/api/project/3"
+					},
+					"response": []
+				},
+				{
+					"name": "Lấy tất cả danh sách agency theo dự án",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/project/3/agency"
 					},
 					"response": []
 				}
@@ -125,6 +144,15 @@
 						"url": "{{base_url}}/api/agency"
 					},
 					"response": []
+				},
+				{
+					"name": "Lấy danh sách booking thuộc về Angency",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/agency/1/booking"
+					},
+					"response": []
 				}
 			]
 		},
@@ -135,7 +163,43 @@
 					"name": "Đăng ký tài khoản",
 					"request": {
 						"method": "POST",
-						"header": []
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "test1",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								},
+								{
+									"key": "fullname",
+									"value": "Nguyen Van C",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "0123456786",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "Quan Thu Duc",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "nguyenvanc@gmail.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{base_url}}/api/auth/register"
 					},
 					"response": []
 				},
