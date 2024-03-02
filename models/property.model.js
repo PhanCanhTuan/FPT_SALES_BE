@@ -1,54 +1,46 @@
 const { DataTypes } = require("sequelize");
 
-module.exports = (sequelize) => {
-  const Property = sequelize.define(
-    "Property",
-    {
-      PropertyId: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      ProjectId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      Type: {
-        type: DataTypes.STRING(100),
-        allowNull: true,
-      },
-      Floor: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      ApartmentNumber: {
-        type: DataTypes.STRING(50),
-        allowNull: true,
-      },
-      ShopNumber: {
-        type: DataTypes.STRING(50),
-        allowNull: true,
-      },
-      Area: {
-        type: DataTypes.FLOAT,
-        allowNull: true,
-      },
-      Price: {
-        type: DataTypes.DECIMAL(18, 2),
-        allowNull: true,
-      },
-      Description: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-      },
+module.exports = model;
+
+function model(sequelize) {
+  const attributes = {
+    property_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
     },
-    {
-      freezeTableName: true,
-      timestamps: false,
-    }
-  );
+    project_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    title: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+    },
+    address: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+    },
+    price: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+    },
+    image: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+  };
 
-  Property.belongsTo(sequelize.models.Project, { foreignKey: "ProjectId" });
+  const options = {
+    freezeTableName: true,
+    // Không thêm các thuộc tính thời gian (updatedAt, createdAt)
+    timestamps: false,
+  };
 
-  return Property;
-};
+  return sequelize.define("Properties", attributes, options);
+}

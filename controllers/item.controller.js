@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const agencyService = require("../services/agency.service");
+const itemService = require("../services/item.service");
 
 router.get("/", async (req, res) => {
   try {
-    var agencies = await agencyService.getAllAgency();
+    var items = await itemService.getAllItems();
     res.status(200).json({
       status: 200,
-      message: "Lấy thành công danh sách đại lý",
-      data: agencies,
+      message: "Get list items successfully",
+      data: items,
     });
   } catch (error) {
     console.log(error);
