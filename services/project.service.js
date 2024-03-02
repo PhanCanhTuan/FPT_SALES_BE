@@ -1,18 +1,36 @@
 const db = require("../config/db");
 
-const getAllProject = async () => {
-  return await db.Project.findAll({
-    include: [db.Investor], // Thêm include để lấy thông tin của Investor
+// Lấy tất cả các dự án hiện tại
+const getAllProjects = async () => {
+  const listProjects = await db.ProjectModel.findAll({
+    include: [db.InvestorModel],
   });
+  return {
+    status: 200,
+    message: "Lấy thành công tất cả dự án",
+    data: listProjects,
+  };
 };
 
-const getProjectById = async (project_id) => {
-  return await db.Project.findByPk(project_id, {
-    include: [db.Investor], // Thêm include để lấy thông tin của Investor
+// Lấy dự án theo ProjectId
+const getProjectById = async (projectId) => {
+  const project = await db.ProjectModel.findByPk(projectId, {
+    include: [db.InvestorModel],
   });
+  if (!project) {
+    return {
+      status: 404,
+      message: "Dự án không tồn tại",
+    };
+  }
+  return {
+    status: 200,
+    message: "Lấy dự án thành công",
+    data: project,
+  };
 };
 
 module.exports = {
-  getAllProject,
+  getAllProjects,
   getProjectById,
 };

@@ -1,15 +1,19 @@
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-  const Investor = sequelize.define(
-    "Investor",
+  const Customer = sequelize.define(
+    "Customer",
     {
-      InvestorId: {
+      CustomerId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      Name: {
+      UserId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      FullName: {
         type: DataTypes.STRING(255),
         allowNull: true,
       },
@@ -25,10 +29,6 @@ module.exports = (sequelize) => {
         type: DataTypes.TEXT,
         allowNull: true,
       },
-      UserId: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
     },
     {
       freezeTableName: true,
@@ -36,7 +36,7 @@ module.exports = (sequelize) => {
     }
   );
 
-  Investor.belongsTo(sequelize.models.User, { foreignKey: "UserId" });
+  Customer.belongsTo(sequelize.models.User, { foreignKey: "UserId" });
 
-  return Investor;
+  return Customer;
 };
