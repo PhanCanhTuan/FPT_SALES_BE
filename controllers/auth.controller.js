@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const projectService = require("../services/project.service");
+const authService = require("../services/auth.service");
 
-router.get("/", async (req, res) => {
+// Xử lí đăng kí tài khoản và jwt
+router.post("/register", async (req, res) => {
   try {
-    var response = await projectService.getAllProjects();
+    var response = await authService.register(req.body);
     res.status(response.status).json({
       response,
     });
@@ -14,10 +15,10 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Lấy dự án theo projectId
-router.get("/:projectId", async (req, res) => {
+// Xử lí đăng nhập tài khoản và jwt
+router.post("/login", async (req, res) => {
   try {
-    var response = await projectService.getProjectById(req.params.projectId);
+    var response = await authService.login(req.body);
     res.status(response.status).json({
       response,
     });

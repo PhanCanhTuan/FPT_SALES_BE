@@ -13,16 +13,8 @@ module.exports = (sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      CustomerName: {
-        type: DataTypes.STRING(255),
-        allowNull: false,
-      },
-      CustomerEmail: {
-        type: DataTypes.STRING(255),
-        allowNull: false,
-      },
-      CustomerPhoneNumber: {
-        type: DataTypes.STRING(20),
+      CustomerId: {
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       BookingDate: {
@@ -41,6 +33,18 @@ module.exports = (sequelize) => {
         type: DataTypes.BOOLEAN,
         allowNull: false,
       },
+      AgencyId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      OpeningForSalesDetailId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      AmountDeposit: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
     },
     {
       freezeTableName: true,
@@ -49,6 +53,11 @@ module.exports = (sequelize) => {
   );
 
   Booking.belongsTo(sequelize.models.Project, { foreignKey: "ProjectId" });
+  Booking.belongsTo(sequelize.models.Customer, { foreignKey: "CustomerId" });
+  Booking.belongsTo(sequelize.models.Agency, { foreignKey: "AgencyId" });
+  Booking.belongsTo(sequelize.models.OpeningForSalesDetail, {
+    foreignKey: "OpeningForSalesDetailId",
+  });
 
   return Booking;
 };

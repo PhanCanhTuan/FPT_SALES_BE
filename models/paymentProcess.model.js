@@ -1,28 +1,28 @@
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-  const OpeningForSales = sequelize.define(
-    "OpeningForSales",
+  const PaymentProcess = sequelize.define(
+    "PaymentProcess",
     {
-      OpeningForSalesId: {
+      PaymentProcessId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      ProjectId: {
+      BookingId: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      StartDate: {
+      PaymentDate: {
         type: DataTypes.DATE,
         allowNull: true,
       },
-      EndDate: {
-        type: DataTypes.DATE,
+      Amount: {
+        type: DataTypes.DECIMAL(18, 2),
         allowNull: true,
       },
-      Status: {
-        type: DataTypes.STRING(100),
+      Description: {
+        type: DataTypes.TEXT,
         allowNull: true,
       },
     },
@@ -32,9 +32,9 @@ module.exports = (sequelize) => {
     }
   );
 
-  OpeningForSales.belongsTo(sequelize.models.Project, {
-    foreignKey: "ProjectId",
+  PaymentProcess.belongsTo(sequelize.models.Booking, {
+    foreignKey: "BookingId",
   });
 
-  return OpeningForSales;
+  return PaymentProcess;
 };
