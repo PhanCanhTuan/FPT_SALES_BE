@@ -2,50 +2,13 @@ const express = require("express");
 const router = express.Router();
 const bookingService = require("../services/booking.service");
 
-router.post("/deposit", async (req, res) => {
+router.post("/sendDeposit", async (req, res) => {
   try {
-    var response = await bookingService.depositProject(req.body);
-    res.status(response.status).json({
-      response,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ statusCode: 500, error: "Something went wrong" });
-  }
-});
-
-// Lấy các booking đang pedding
-router.get("/pending", async (req, res) => {
-  try {
-    var response = await bookingService.getBookingPedding();
-    res.status(response.status).json({
-      response,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ statusCode: 500, error: "Something went wrong" });
-  }
-});
-
-// Thay đổi trạng thái của booking thành approved
-router.put("/approve/:bookingId", async (req, res) => {
-  try {
-    var response = await bookingService.approveBooking(req.params.bookingId);
-    res.status(response.status).json({
-      response,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ statusCode: 500, error: "Something went wrong" });
-  }
-});
-
-// Lấy 1 booking cụ thể theo bookingID
-router.get("/:bookingId", async (req, res) => {
-  try {
-    var response = await bookingService.getBookingById(req.params.bookingId);
-    res.status(response.status).json({
-      response,
+    var bookingDeposit = await bookingService.sendDeposit(req.body);
+    res.status(200).json({
+      status: 200,
+      message: "Đã gửi thông tin đặt cọc thành công",
+      data: bookingDeposit,
     });
   } catch (error) {
     console.log(error);

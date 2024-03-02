@@ -1,6 +1,9 @@
+// Import Sequelize và các kiểu dữ liệu cần thiết
 const { DataTypes } = require("sequelize");
 
+// Định nghĩa hàm model
 module.exports = (sequelize) => {
+  // Define model
   const Project = sequelize.define(
     "Project",
     {
@@ -11,11 +14,11 @@ module.exports = (sequelize) => {
       },
       Name: {
         type: DataTypes.STRING(255),
-        allowNull: true,
+        allowNull: false,
       },
       InvestorId: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: true, // Nếu không muốn để trống, đặt allowNull: false
       },
       Location: {
         type: DataTypes.STRING(255),
@@ -63,11 +66,13 @@ module.exports = (sequelize) => {
       },
     },
     {
+      // Options
       freezeTableName: true,
       timestamps: false,
     }
   );
 
+  // Define quan hệ với bảng Investor
   Project.belongsTo(sequelize.models.Investor, { foreignKey: "InvestorId" });
 
   return Project;

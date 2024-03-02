@@ -1,15 +1,11 @@
 const { Sequelize } = require("sequelize");
-const userModel = require("../models/user.model");
-const agencyModel = require("../models/agency.model");
-const customerModel = require("../models/customer.model");
+const propertyModel = require("../models/property.model");
+const itemModel = require("../models/item.model");
+const propertyItemModel = require("../models/propertyItem.model");
+const openingForSalesModel = require("../models/openingForSales.model");
 const investorModel = require("../models/investor.model");
 const projectModel = require("../models/project.model");
-const propertyModel = require("../models/property.model");
-const openingForSalesModel = require("../models/openingForSales.model");
-const openingForSalesDetailModel = require("../models/openingForSalesDetail.model");
 const bookingModel = require("../models/booking.model");
-const paymentProcess = require("../models/paymentProcess.model");
-const paymentProcessDetail = require("../models/paymentProcessDetail.model");
 
 require("dotenv").config();
 
@@ -28,17 +24,13 @@ const sequelize = new Sequelize(
 );
 
 const db = {};
-db.UserModel = userModel(sequelize);
-db.CustomerModel = customerModel(sequelize);
-db.InvestorModel = investorModel(sequelize);
-db.AgencyModel = agencyModel(sequelize);
-db.ProjectModel = projectModel(sequelize);
-db.PropertyModel = propertyModel(sequelize);
-db.OpeningForSalesModel = openingForSalesModel(sequelize);
-db.OpeningForSalesDetailModel = openingForSalesDetailModel(sequelize);
-db.BookingModel = bookingModel(sequelize);
-db.PaymentProcessModel = paymentProcess(sequelize);
-db.PaymentProcessDetailModel = paymentProcessDetail(sequelize);
+// db.Property = propertyModel(sequelize);
+// db.Item = itemModel(sequelize);
+// db.PropertyItem = propertyItemModel(sequelize);
+// db.OpeningForSales = openingForSalesModel(sequelize);
+db.Investor = investorModel(sequelize);
+db.Project = projectModel(sequelize);
+db.Booking = bookingModel(sequelize);
 
 // sync all models with database
 sequelize.sync({ alter: true });
