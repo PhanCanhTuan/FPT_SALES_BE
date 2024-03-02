@@ -10,6 +10,7 @@ const openingForSalesDetailModel = require("../models/openingForSalesDetail.mode
 const bookingModel = require("../models/booking.model");
 const paymentProcess = require("../models/paymentProcess.model");
 const paymentProcessDetail = require("../models/paymentProcessDetail.model");
+const agencyProjectModel = require("../models/agencyProject.model");
 
 require("dotenv").config();
 
@@ -39,6 +40,7 @@ db.OpeningForSalesDetailModel = openingForSalesDetailModel(sequelize);
 db.BookingModel = bookingModel(sequelize);
 db.PaymentProcessModel = paymentProcess(sequelize);
 db.PaymentProcessDetailModel = paymentProcessDetail(sequelize);
+db.AgencyProjectModel = agencyProjectModel(sequelize);
 
 // sync all models with database
 sequelize.sync({ alter: true });

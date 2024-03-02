@@ -16,4 +16,17 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Lấy danh sách booking của customer
+router.get("/:CustomerId/booking", async (req, res) => {
+  try {
+    var bookings = await customerService.getBookingByCustomer(
+      req.params.CustomerId
+    );
+    res.status(bookings.status).json(bookings);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ statusCode: 500, error: "Something went wrong" });
+  }
+});
+
 module.exports = router;

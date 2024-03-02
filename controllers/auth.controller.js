@@ -6,9 +6,7 @@ const authService = require("../services/auth.service");
 router.post("/register", async (req, res) => {
   try {
     var response = await authService.register(req.body);
-    res.status(response.status).json({
-      response,
-    });
+    res.status(response.status).json(response);
   } catch (error) {
     console.log(error);
     res.status(500).json({ statusCode: 500, error: "Something went wrong" });
@@ -19,9 +17,7 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     var response = await authService.login(req.body);
-    res.status(response.status).json({
-      response,
-    });
+    res.status(response.status).json(response);
   } catch (error) {
     console.log(error);
     res.status(500).json({ statusCode: 500, error: "Something went wrong" });

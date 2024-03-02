@@ -27,4 +27,17 @@ router.get("/:projectId", async (req, res) => {
   }
 });
 
+// Lấy danh sách agency theo dự án
+router.get("/:projectId/agency", async (req, res) => {
+  try {
+    var response = await projectService.getAgencyByProject(
+      req.params.projectId
+    );
+    res.status(response.status).json(response);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ statusCode: 500, error: "Something went wrong" });
+  }
+});
+
 module.exports = router;

@@ -99,13 +99,25 @@ const approveBooking = async (bookingId) => {
     return {
       status: 404,
       mes: "Booking not found",
+      data: null,
     };
   }
+
+  //  Nếu là trạng thái đã approved thì trả về lỗi 400
+  if (booking.Status === "Approved") {
+    return {
+      status: 400,
+      mes: "Booking is already approved",
+      data: null,
+    };
+  }
+
   booking.Status = "Approved";
   await booking.save();
   return {
     status: 200,
     mes: "Approve booking successful",
+    data: null,
   };
 };
 

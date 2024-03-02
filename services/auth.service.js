@@ -12,7 +12,6 @@ const register = async ({
   email,
 }) => {
   try {
-    console.log(username, password, fullname, phone, address);
     const [user, created] = await db.UserModel.findOrCreate({
       where: { Username: username },
       defaults: {
@@ -49,8 +48,11 @@ const register = async ({
         return {
           status: 201,
           mes: "register successful",
-          token: `Bearer ${token}`,
+          token: `${token}`,
         };
+      } else {
+        // Xóa user nếu không tạo được customer
+        await db.UserModel.destroy({ where: { UserId: user.UserId } });
       }
     }
 
@@ -97,7 +99,7 @@ const login = async ({ username, password }) => {
         return {
           status: 200,
           mes: "login successful",
-          token: `Bearer ${token}`,
+          token: `${token}`,
         };
       }
     }

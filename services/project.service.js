@@ -30,7 +30,27 @@ const getProjectById = async (projectId) => {
   };
 };
 
+// Lấy tất cả danh sách agency theo dự án
+const getAgencyByProject = async (projectId) => {
+  const response = await db.AgencyProjectModel.findAll({
+    include: [
+      {
+        model: db.ProjectModel,
+        where: { ProjectId: projectId },
+      },
+      db.AgencyModel,
+    ],
+  });
+
+  return {
+    status: 200,
+    message: "Lấy danh sách agency theo dự án thành công",
+    data: response,
+  };
+};
+
 module.exports = {
   getAllProjects,
   getProjectById,
+  getAgencyByProject,
 };
