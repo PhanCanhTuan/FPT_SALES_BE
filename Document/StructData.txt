@@ -1,0 +1,100 @@
+Bảng Customer - Khách Hàng: Lưu trữ thông tin của khách hàng, bao gồm tên, email và số điện thoại.
+Bảng này lưu trữ thông tin của khách hàng, bao gồm tên, email, và số điện thoại.
+CREATE TABLE Customer (
+    CustomerId INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(255),
+    Email NVARCHAR(255) UNIQUE,
+    PhoneNumber NVARCHAR(20)
+);
+
+Bảng Investor - Nhà Đầu Tư: Chứa thông tin của nhà đầu tư, bao gồm tên, email, số điện thoại và địa chỉ.
+CREATE TABLE Investor (
+    InvestorId INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(255),
+    Email NVARCHAR(255) UNIQUE,
+    PhoneNumber NVARCHAR(20),
+    Address NVARCHAR(MAX)
+);
+
+Bảng Project - Dự Án: Đại diện cho một dự án, bao gồm thông tin như tên dự án, nhà đầu tư, vị trí, loại hình dự án (ví dụ: căn hộ), số lượng căn hộ/cửa hàng, diện tích khu đất, mật độ xây dựng, trạng thái dự án, và mô tả chi tiết.
+CREATE TABLE Project (
+    ProjectId INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(255),
+    InvestorId INT,
+    Location NVARCHAR(255),
+    Thumbnail NVARCHAR(255),
+    Type NVARCHAR(100),
+    NumberOfApartments INT,
+    NumberOfShops INT,
+    LandArea FLOAT,
+    ConstructionDensity FLOAT,
+    Status NVARCHAR(100),
+    StartDate DATE,
+    EndDate DATE,
+    Description NVARCHAR(MAX),
+    FOREIGN KEY (InvestorId) REFERENCES Investor(InvestorId)
+);
+
+Bảng Property - Bất Động Sản: Lưu trữ thông tin chi tiết về từng bất động sản trong dự án, bao gồm loại bất động sản (căn hộ hoặc cửa hàng), vị trí (tầng, số căn hộ/cửa hàng), diện tích, giá bán và mô tả.
+CREATE TABLE Property (
+    PropertyId INT IDENTITY(1,1) PRIMARY KEY,
+    ProjectId INT,
+    Type NVARCHAR(100),
+    Floor INT,
+    ApartmentNumber NVARCHAR(50),
+    ShopNumber NVARCHAR(50),
+    Area FLOAT,
+    Price DECIMAL(18, 2),
+    Description NVARCHAR(MAX),
+    FOREIGN KEY (ProjectId) REFERENCES Project(ProjectId)
+);
+
+Bảng Agency - Đại Lý: Chứa thông tin về các đại lý, bao gồm tên, email và số điện thoại.
+CREATE TABLE Agency (
+    AgencyId INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(255),
+    Email NVARCHAR(255),
+    PhoneNumber NVARCHAR(20)
+);
+
+Bảng AgencyProject - Quan Hệ Đại Lý và Dự Án: Mô tả mối quan hệ nhiều-nhiều giữa các đại lý và dự án, cho phép một đại lý quản lý nhiều dự án và một dự án có thể được quản lý bởi nhiều đại lý.
+CREATE TABLE AgencyProject (
+    AgencyProjectId INT IDENTITY(1,1) PRIMARY KEY,
+    AgencyId INT,
+    ProjectId INT,
+    FOREIGN KEY (AgencyId) REFERENCES Agency(AgencyId),
+    FOREIGN KEY (ProjectId) REFERENCES Project(ProjectId)
+);
+
+Bảng Booking - Đặt Cọc: Thông tin đặt cọc của khách hàng đã được lưu ở đây, bao gồm thông tin khách hàng, dự án họ quan tâm, và ngày đặt cọc. Trạng thái đặt cọc có thể được cập nhật để phản ánh việc khách hàng đã chuyển sang giai đoạn quay số ngẫu nhiên hoặc chờ mua căn hộ.
+CREATE TABLE Booking (
+    BookingId INT IDENTITY(1,1) PRIMARY KEY,
+    CustomerId INT,
+    ProjectId INT,
+    BookingDate DATE,
+    Status NVARCHAR(100),
+    SelectionMethod NVARCHAR(100), -- "Random" hoặc "DepositTime"
+    IsSelected BIT DEFAULT 0, -- 0 chưa được chọn, 1 đã được chọn
+    FOREIGN KEY (CustomerId) REFERENCES Customer(CustomerId),
+    FOREIGN KEY (ProjectId) REFERENCES Project(ProjectId)
+);
+
+Bảng OpeningForSales - Đợt Mở Bán: Đại diện cho các đợt mở bán của dự án, bao gồm thông tin về thời gian bắt đầu, kết thúc và trạng thái của đợt mở bán.
+CREATE TABLE OpeningForSales (
+    OpeningForSalesId INT IDENTITY(1,1) PRIMARY KEY,
+    ProjectId INT,
+    StartDate DATE,
+    EndDate DATE,
+    Status NVARCHAR(100),
+    FOREIGN KEY (ProjectId) REFERENCES Project(ProjectId)
+);
+
+Bảng OpeningForSalesDetail - Chi Tiết Đợt Mở Bán: Lưu trữ thông tin chi tiết về các bất động sản được bán trong mỗi đợt mở bán, liên kết đợt mở bán với các bất động sản cụ thể.
+CREATE TABLE OpeningForSalesDetail (
+    OpeningForSalesDetailId INT IDENTITY(1,1) PRIMARY KEY,
+    OpeningForSalesId INT,
+    PropertyId INT,
+    FOREIGN KEY (OpeningForSalesId) REFERENCES OpeningForSales(OpeningForSalesId),
+    FOREIGN KEY (PropertyId) REFERENCES Property(PropertyId)
+);
+
