@@ -79,6 +79,29 @@ const login = async ({ username, password }) => {
         },
       ],
     });
+
+    // Tìm kiếm agency theo UserId
+    const agency = await db.AgencyModel.findOne({
+      where: { UserId: user.UserId },
+      include: [
+        {
+          model: db.UserModel,
+          as: "User",
+        },
+      ],
+    });
+
+    // Tìm kiếm investor theo UserId
+    const investor = await db.InvestorModel.findOne({
+      where: { UserId: user.UserId },
+      include: [
+        {
+          model: db.UserModel,
+          as: "User",
+        },
+      ],
+    });
+
     if (user && customer) {
       // so sánh password
       if (user.Password === password) {
@@ -101,6 +124,58 @@ const login = async ({ username, password }) => {
           mes: "login successful",
           token: `${token}`,
         };
+      }
+    } else if (user && agency) {
+      if (user && agency) {
+        // so sánh password
+        if (user.Password === password) {
+          const token = jwt.sign(
+            {
+              id: user.UserId,
+              Username: user.Username,
+              Role: user.Role,
+              Email: agency.Email,
+              PhoneNumber: agency.PhoneNumber,
+              Address: agency.Address,
+              FullName: agency.FullName,
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: "2d" }
+          );
+
+          return {
+            status: 200,
+            mes: "login successful",
+            token: `${token}`,
+          };
+        }
+      }
+    } else {
+      if (user && investor) {
+        if (user && investor) {
+          // so sánh password
+          if (user.Password === password) {
+            const token = jwt.sign(
+              {
+                id: user.UserId,
+                Username: user.Username,
+                Role: user.Role,
+                Email: investor.Email,
+                PhoneNumber: investor.PhoneNumber,
+                Address: investor.Address,
+                FullName: investor.FullName,
+              },
+              process.env.JWT_SECRET,
+              { expiresIn: "2d" }
+            );
+
+            return {
+              status: 200,
+              mes: "login successful",
+              token: `${token}`,
+            };
+          }
+        }
       }
     }
 
