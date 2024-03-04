@@ -7,6 +7,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors()); // to enable cors
 
+// Routes
 app.use("/api/user", require("./controllers/user.controller"));
 app.use("/api/customer", require("./controllers/customer.controller"));
 app.use("/api/agency", require("./controllers/agency.controller."));
