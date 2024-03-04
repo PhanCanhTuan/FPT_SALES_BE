@@ -53,4 +53,26 @@ router.get("/:bookingId", async (req, res) => {
   }
 });
 
+// Lấy ra những booking nào có trạng thái là approved
+router.get("/list-approved", async (req, res) => {
+  try {
+    var response = await bookingService.getBookingApproved();
+    res.status(response.status).json(response);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ statusCode: 500, error: "Something went wrong" });
+  }
+});
+
+// Lấy tất cả các booking
+router.get("/", async (req, res) => {
+  try {
+    var response = await bookingService.getAllBooking();
+    res.status(response.status).json(response);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ statusCode: 500, error: "Something went wrong" });
+  }
+});
+
 module.exports = router;

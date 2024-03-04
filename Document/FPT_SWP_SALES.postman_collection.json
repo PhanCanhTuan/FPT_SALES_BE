@@ -73,7 +73,7 @@
 					"response": []
 				},
 				{
-					"name": "Lấy các dự án đang bị pedding",
+					"name": "Lấy các booking đang bị pedding",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -96,6 +96,24 @@
 						"method": "GET",
 						"header": [],
 						"url": "{{base_url}}/api/booking/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Lấy ra những booking đang có trạng thái là Approved",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/booking/list-approved"
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/booking"
 					},
 					"response": []
 				}

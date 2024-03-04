@@ -149,9 +149,58 @@ const getBookingById = async (bookingId) => {
   };
 };
 
+// Lấy ra những booking nào có trạng thái là approved
+const getBookingApproved = async () => {
+  const booking = await db.BookingModel.findAll({
+    where: {
+      Status: "Approved",
+    },
+    include: [
+      {
+        model: db.ProjectModel,
+      },
+      {
+        model: db.CustomerModel,
+      },
+      {
+        model: db.AgencyModel,
+      },
+    ],
+  });
+  return {
+    status: 200,
+    mes: "Get booking approved successful",
+    data: booking,
+  };
+};
+
+// Lấy danh sách booking hiện có
+const getAllBooking = async () => {
+  const bookings = await db.BookingModel.findAll({
+    include: [
+      {
+        model: db.ProjectModel,
+      },
+      {
+        model: db.CustomerModel,
+      },
+      {
+        model: db.AgencyModel,
+      },
+    ],
+  });
+  return {
+    status: 200,
+    mes: "Lấy thành công danh sách booking hiện có",
+    data: bookings,
+  };
+};
+
 module.exports = {
   depositProject,
   getBookingPedding,
   approveBooking,
   getBookingById,
+  getBookingApproved,
+  getAllBooking,
 };
