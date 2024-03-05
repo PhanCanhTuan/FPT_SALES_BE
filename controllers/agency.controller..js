@@ -31,4 +31,19 @@ router.get("/:AgencyId/booking", async (req, res) => {
   }
 });
 
+// Thêm property cho bảng OpeningForSalesDetail
+router.post("/opening-for-sales-detail", async (req, res) => {
+  try {
+    var response = await agencyService.createOpeningForSalesDetail(
+      req.body.OpeningForSalesId,
+      req.body.PropertyId,
+      req.body.BookingId
+    );
+    res.status(response.status).json(response);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ statusCode: 500, error: "Something went wrong" });
+  }
+});
+
 module.exports = router;
