@@ -171,6 +171,35 @@
 						"url": "{{base_url}}/api/agency/1/booking"
 					},
 					"response": []
+				},
+				{
+					"name": "Thêm property cho Opening For Sales Detail",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "OpeningForSalesId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "PropertyId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "BookingId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{base_url}}/api/agency/opening-for-sales-detail"
+					},
+					"response": []
 				}
 			]
 		},
@@ -264,6 +293,40 @@
 								}
 							]
 						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Investor",
+			"item": [
+				{
+					"name": "Tạo đợt mở bán dự án",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "projectId",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "startTime",
+									"value": "2024-03-01 17:53:32.1450000 +00:00",
+									"type": "text"
+								},
+								{
+									"key": "endTime",
+									"value": "2024-03-20 17:53:32.1450000 +00:00",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{base_url}}/api/investor/opening-for-sale"
 					},
 					"response": []
 				}
