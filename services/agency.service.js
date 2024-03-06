@@ -21,7 +21,108 @@ const getBookingByAgency = async (AgencyId) => {
   };
 };
 
+/*
+API - Lợi
+2. Thêm property cho bảng OpeningForSalesDetail
+- Check xem booking đó phải khác isSelected !== true thì mới được thêm vào 
+- Check xem là có bảng openingForSalesDetail thì báo lỗi
+
+*/
+const createOpeningForSalesDetail = async (
+  OpeningForSalesId,
+  PropertyId,
+  BookingId
+) => {
+  // Kiểm tra xem có propery đó không
+  const property = await db.PropertyModel.findByPk(PropertyId);
+  if (!property) {
+    return {
+      status: 404,
+      message: "Không tìm thấy property",
+    };
+  }
+
+  const booking = await db.BookingModel.findByPk(BookingId);
+  if (!booking) {
+    return {
+      status: 404,
+      message: "Không tìm thấy booking",
+    };
+  }
+
+  if (booking.isSelected === true) {
+    return {
+      status: 400,
+      message: "Booking đã được chọn",
+    };
+  }
+
+  // Và kiểm tra trạng thái của booking phải là Approved
+  if (booking.Status !== "Approved") {
+    return {
+      status: 400,
+      message: "Booking chưa được duyệt",
+    };
+  }
+
+  // Kiểm tra xem có đợt mở bán đó không
+  const openingForSales = await db.OpeningForSalesModel.findByPk(
+    OpeningForSalesId
+  );
+  if (!openingForSales) {
+    return {
+      status: 404,
+      message: "Không tìm thấy đợt mở bán",
+    };
+  }
+
+  const openingForSalesDetail = await db.OpeningForSalesDetailModel.findByPk(
+    booking.OpeningForSalesDetailId
+  );
+
+  // Kiểm tra xem có bảng openingForSalesDetail thì báo lỗi
+  if (openingForSalesDetail) {
+    return {
+      status: 400,
+      message: "Booking đã được thêm vào đợt mở bán",
+    };
+  }
+
+  // Kiểm tra xem là property mới chưa được thêm vào đợt mở bán
+  const ListAllOpeningForSalesDetail =
+    await db.OpeningForSalesDetailModel.findAll({
+      where: { PropertyId: PropertyId },
+    });
+  if (ListAllOpeningForSalesDetail && ListAllOpeningForSalesDetail.length > 0) {
+    return {
+      status: 400,
+      message:
+        "Property đã được thêm vào đợt mở bán, vui lòng chọn property khác",
+    };
+  }
+
+  const NewOpeningForSalesDetail = await db.OpeningForSalesDetailModel.create({
+    OpeningForSalesId: OpeningForSalesId,
+    PropertyId: PropertyId,
+  });
+
+  // Update trạng thái của booking isSlected = true
+  await db.BookingModel.update(
+    {
+      IsSelected: true,
+      OpeningForSalesDetailId: NewOpeningForSalesDetail.OpeningForSalesDetailId,
+    },
+    { where: { BookingId: BookingId } }
+  );
+
+  return {
+    status: 201,
+    message: "Thêm booking vào đợt mở bán thành công",
+  };
+};
+
 module.exports = {
   getAllAgency,
   getBookingByAgency,
+  createOpeningForSalesDetail,
 };
