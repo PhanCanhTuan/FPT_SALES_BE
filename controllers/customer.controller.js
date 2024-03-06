@@ -29,4 +29,14 @@ router.get("/:CustomerId/booking", async (req, res) => {
   }
 });
 
+router.put("/:userId", async (req, res) => {
+  try {
+    var customer = await customerService.updateCustomer(req.params.userId, req.body);
+    res.status(customer.status).json(customer);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ statusCode: 500, error: "Something went wrong" });
+  }
+});
+
 module.exports = router;
