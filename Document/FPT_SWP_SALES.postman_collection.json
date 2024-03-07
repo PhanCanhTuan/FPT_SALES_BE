@@ -447,6 +447,23 @@
 						"url": "{{base_url}}/api/property/create-property"
 					},
 					"response": []
+				},
+				{
+					"name": "Lấy chi tiết property theo id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/property/1/property"
+					},
+					"response": []
+				},
+				{
+					"name": "Lấy danh sách property theo projectId",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			]
 		}

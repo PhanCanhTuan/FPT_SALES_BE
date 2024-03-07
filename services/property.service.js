@@ -70,6 +70,45 @@ const createProperty = async ({
   };
 };
 
+// Lấy danh sách property theo projectId
+const getPropertyByProject = async (projectId) => {
+  // Kiểm tra xem project có tồn tại không
+  const project = await db.ProjectModel.findByPk(projectId);
+  if (!project) {
+    return {
+      status: 404,
+      message: "Không tìm thấy dự án",
+    };
+  }
+  const response = await db.PropertyModel.findAll({
+    where: { ProjectId: projectId },
+  });
+
+  return {
+    status: 200,
+    message: "Lấy danh sách property thành công",
+    data: response,
+  };
+};
+
+// Lấy property theo propertyId
+const getPropertyById = async (propertyId) => {
+  const property = await db.PropertyModel.findByPk(propertyId);
+  if (!property) {
+    return {
+      status: 404,
+      message: "Không tìm thấy property",
+    };
+  }
+  return {
+    status: 200,
+    message: "Lấy property thành công",
+    data: property,
+  };
+};
+
 module.exports = {
   createProperty,
+  getPropertyByProject,
+  getPropertyById,
 };
