@@ -395,6 +395,60 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Property",
+			"item": [
+				{
+					"name": "Tạo mới property",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "ProjectId",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "Type",
+									"value": "Test type 1",
+									"type": "text"
+								},
+								{
+									"key": "Floor",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "ApartmentNumber",
+									"value": "0201",
+									"type": "text"
+								},
+								{
+									"key": "ShopNumber",
+									"value": "0",
+									"type": "text"
+								},
+								{
+									"key": "Area",
+									"value": "70",
+									"type": "text"
+								},
+								{
+									"key": "Price",
+									"value": "1.2",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{base_url}}/api/property/create-property"
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
