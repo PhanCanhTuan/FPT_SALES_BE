@@ -148,6 +148,70 @@
 						"url": "{{base_url}}/api/project/3/agency"
 					},
 					"response": []
+				},
+				{
+					"name": "Tạo một project mới",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "Name",
+									"value": "Test1",
+									"type": "text"
+								},
+								{
+									"key": "InvestorId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "Location",
+									"value": "lotesst1",
+									"type": "text"
+								},
+								{
+									"key": "Thumbnail",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "Type",
+									"value": "Apartment",
+									"type": "text"
+								},
+								{
+									"key": "NumberOfApartments",
+									"value": "20",
+									"type": "text"
+								},
+								{
+									"key": "NumberOfShops",
+									"value": "0",
+									"type": "text"
+								},
+								{
+									"key": "LandArea",
+									"value": "2000",
+									"type": "text"
+								},
+								{
+									"key": "ConstructionDensity",
+									"value": "70",
+									"type": "text"
+								},
+								{
+									"key": "Status",
+									"value": "Planed",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{base_url}}/api/project/create-project"
+					},
+					"response": []
 				}
 			]
 		},
