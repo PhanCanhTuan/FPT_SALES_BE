@@ -75,4 +75,17 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Reject Booking
+router.put("/reject/:bookingId", async (req, res) => {
+  try {
+    var response = await bookingService.rejectBooking(req.params.bookingId);
+    res.status(response.status).json({
+      response,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ statusCode: 500, error: "Something went wrong" });
+  }
+});
+
 module.exports = router;

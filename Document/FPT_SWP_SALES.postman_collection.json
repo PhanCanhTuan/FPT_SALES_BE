@@ -116,6 +116,15 @@
 						"url": "{{base_url}}/api/booking"
 					},
 					"response": []
+				},
+				{
+					"name": "Hủy đặt cọc",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": "{{base_url}}/api/booking/reject/2"
+					},
+					"response": []
 				}
 			]
 		},
@@ -461,7 +470,8 @@
 					"name": "Lấy danh sách property theo projectId",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": "{{base_url}}/api/property/3/list-property-by-projectId"
 					},
 					"response": []
 				}
