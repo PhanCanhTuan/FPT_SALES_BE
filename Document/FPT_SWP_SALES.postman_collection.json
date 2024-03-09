@@ -273,6 +273,25 @@
 						"url": "{{base_url}}/api/agency/opening-for-sales-detail"
 					},
 					"response": []
+				},
+				{
+					"name": "Đóng đợt mở bán",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "OpeningForSalesId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{base_url}}/api/agency/close-opening-for-sales"
+					},
+					"response": []
 				}
 			]
 		},

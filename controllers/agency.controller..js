@@ -46,4 +46,17 @@ router.post("/opening-for-sales-detail", async (req, res) => {
   }
 });
 
+// Đóng đợt mở bán
+router.put("/close-opening-for-sales", async (req, res) => {
+  try {
+    var response = await agencyService.closeOpeningForSales(
+      req.body.OpeningForSalesId
+    );
+    res.status(response.status).json(response);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ statusCode: 500, error: "Something went wrong" });
+  }
+});
+
 module.exports = router;

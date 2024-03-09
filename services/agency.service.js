@@ -76,6 +76,14 @@ const createOpeningForSalesDetail = async (
     };
   }
 
+  // Kiểm tra xem đợt mở bán đó Status có Opening không
+  if (openingForSales.Status !== "Opening") {
+    return {
+      status: 400,
+      message: "Đợt mở bán đã đóng",
+    };
+  }
+
   const openingForSalesDetail = await db.OpeningForSalesDetailModel.findByPk(
     booking.OpeningForSalesDetailId
   );
@@ -121,8 +129,39 @@ const createOpeningForSalesDetail = async (
   };
 };
 
+/*
+Lợi - Đóng đợt mở bán với Status là Closed
+*/
+const closeOpeningForSales = async (OpeningForSalesId) => {
+  const openingForSales = await db.OpeningForSalesModel.findByPk(
+    OpeningForSalesId
+  );
+  if (!openingForSales) {
+    return {
+      status: 404,
+      message: "Không tìm thấy đợt mở bán",
+    };
+  }
+
+  // Kiểm tra xem đợt mở bán đó Status có Opening không
+  if (openingForSales.Status !== "Opening") {
+    return {
+      status: 400,
+      message: "Đợt mở bán đã đóng",
+    };
+  }
+
+  openingForSales.Status = "Closed";
+  await openingForSales.save();
+  return {
+    status: 200,
+    message: "Đóng đợt mở bán thành công",
+  };
+};
+
 module.exports = {
   getAllAgency,
   getBookingByAgency,
   createOpeningForSalesDetail,
+  closeOpeningForSales,
 };
