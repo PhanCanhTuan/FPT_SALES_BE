@@ -59,4 +59,47 @@ router.put("/close-opening-for-sales", async (req, res) => {
   }
 });
 
+router.post("/", async (req, res) => {
+  try {
+    var response = await agencyService.createAgency(req.body);
+    res.status(response.status).json(response);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ statusCode: 500, error: "Something went wrong" });
+  }
+});
+
+router.get("/:AgencyId", async (req, res) => {
+  try {
+    var response = await agencyService.getAgencyById(req.params.AgencyId);
+    res.status(response.status).json(response);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ statusCode: 500, error: "Something went wrong" });
+  }
+});
+
+router.put("/:AgencyId", async (req, res) => {
+  try {
+    var response = await agencyService.updateAgency(
+      req.params.AgencyId,
+      req.body
+    );
+    res.status(response.status).json(response);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ statusCode: 500, error: "Something went wrong" });
+  }
+});
+
+router.delete("/:AgencyId", async (req, res) => {
+  try {
+    var response = await agencyService.deleteAgency(req.params.AgencyId);
+    res.status(response.status).json(response);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ statusCode: 500, error: "Something went wrong" });
+  }
+});
+
 module.exports = router;
