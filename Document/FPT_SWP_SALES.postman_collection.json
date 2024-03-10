@@ -86,7 +86,7 @@
 					"request": {
 						"method": "PUT",
 						"header": [],
-						"url": "{{base_url}}/api/booking/approve/1"
+						"url": "{{base_url}}/api/booking/approve/4"
 					},
 					"response": []
 				},
@@ -260,12 +260,22 @@
 								},
 								{
 									"key": "PropertyId",
-									"value": "1",
+									"value": "4",
 									"type": "text"
 								},
 								{
 									"key": "BookingId",
+									"value": "4",
+									"type": "text"
+								},
+								{
+									"key": "AgencyId",
 									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "NumberInstallments",
+									"value": "3",
 									"type": "text"
 								}
 							]
