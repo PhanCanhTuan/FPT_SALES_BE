@@ -31,8 +31,24 @@ router.get("/:CustomerId/booking", async (req, res) => {
 
 router.put("/:userId", async (req, res) => {
   try {
-    var customer = await customerService.updateCustomer(req.params.userId, req.body);
+    var customer = await customerService.updateCustomer(
+      req.params.userId,
+      req.body
+    );
     res.status(customer.status).json(customer);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ statusCode: 500, error: "Something went wrong" });
+  }
+});
+
+// Lấy danh sách đợt thanh toán của paymentProcess
+router.get("/debt/:bookingId", async (req, res) => {
+  try {
+    var response = await customerService.getDebtByBooking(req.params.bookingId);
+    res.status(response.status).json({
+      response,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ statusCode: 500, error: "Something went wrong" });

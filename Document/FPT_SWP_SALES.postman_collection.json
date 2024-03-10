@@ -27,6 +27,15 @@
 						"url": "{{base_url}}/api/customer/16/booking"
 					},
 					"response": []
+				},
+				{
+					"name": "Lấy danh sách đợt thanh toán của paymentProcess",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/customer/debt/4"
+					},
+					"response": []
 				}
 			]
 		},
