@@ -1,4 +1,5 @@
 const db = require("../config/db");
+const { Op } = require("sequelize");
 
 const getAllAgency = async () => {
   return await db.AgencyModel.findAll({
@@ -121,8 +122,153 @@ const createOpeningForSalesDetail = async (
   };
 };
 
+// Tạo mới Agency
+const createAgency = async ({ UserId, Name, Email, PhoneNumber }) => {
+  const user = await db.UserModel.findByPk(UserId);
+  if (!user) {
+    return {
+      status: 404,
+      message: "Không tìm thấy người dùng",
+    };
+  }
+  const agencies = await db.AgencyModel.findAll();
+  if (agencies !== undefined && agencies.length > 0) {
+    for (const agency of agencies) {
+      if (agency.dataValues.Email === Email) {
+        return {
+          status: 400,
+          message: "Email đã được sử dụng",
+        };
+      }
+      if (agency.dataValues.PhoneNumber === PhoneNumber) {
+        return {
+          status: 400,
+          message: "Số điện thoại đã được sử dụng",
+        };
+      }
+    }
+  }
+  const agency = await db.AgencyModel.create({
+    UserId,
+    Name,
+    Email,
+    PhoneNumber,
+  });
+  return {
+    status: 201,
+    message: "Tạo agency thành công",
+    data: agency,
+  };
+};
+
+// Lấy agency theo AgencyId
+const getAgencyById = async (AgencyId) => {
+  const agency = await db.AgencyModel.findByPk(AgencyId, {
+    include: [db.UserModel],
+  });
+  if (!agency) {
+    return {
+      status: 404,
+      message: "Không tìm thấy Agency",
+    };
+  }
+  return {
+    status: 200,
+    message: "Lấy Agency thành công",
+    data: agency,
+  };
+};
+
+// Cập nhật thông tin Agency
+const updateAgency = async (AgencyId, { Name, Email, PhoneNumber }) => {
+  const agency = await db.AgencyModel.findByPk(AgencyId, {
+    include: [db.UserModel],
+  });
+  if (!agency) {
+    return {
+      status: 404,
+      message: "Không tìm thấy Agency",
+    };
+  }
+  const agencies = await db.AgencyModel.findAll({
+    where: {
+      AgencyId: {
+        [Op.ne]: AgencyId,
+      },
+    },
+  });
+  if (agencies !== undefined && agencies.length > 0) {
+    for (const agency of agencies) {
+      if (agency.dataValues.Email === Email) {
+        return {
+          status: 400,
+          message: "Email đã được sử dụng",
+        };
+      }
+      if (agency.dataValues.PhoneNumber === PhoneNumber) {
+        return {
+          status: 400,
+          message: "Số điện thoại đã được sử dụng",
+        };
+      }
+    }
+  }
+
+  agency.Name = Name ?? agency.Name;
+  agency.Email = Email ?? agency.Email;
+  agency.PhoneNumber = PhoneNumber ?? agency.PhoneNumber;
+
+  await agency.save();
+  return {
+    status: 200,
+    message: "Cập nhật thông tin Agency thành công",
+    data: agency,
+  };
+};
+
+// Xóa Agency
+const deleteAgency = async (AgencyId) => {
+  const agency = await db.AgencyModel.findByPk(AgencyId);
+  if (!agency) {
+    return {
+      status: 404,
+      message: "Không tìm thấy Agency",
+    };
+  }
+  const checkAgencyProjectHaveAgency = await db.AgencyProjectModel.findOne({
+    where: { AgencyId },
+  });
+  if (checkAgencyProjectHaveAgency) {
+    return {
+      status: 400,
+      message: "Tồn tại Agency trong AgencyProject. Không thể xóa!",
+    };
+  }
+  const checkBookingHaveAgency = await db.BookingModel.findOne({
+    where: { AgencyId },
+  });
+  if (checkBookingHaveAgency) {
+    return {
+      status: 400,
+      message: "Tồn tại Agency trong Booking. Không thể xóa",
+    };
+  }
+  // Thực hiện xóa agency
+  await agency.destroy();
+
+  // Trả về thông báo thành công
+  return {
+    status: 200,
+    message: "Đã xóa Agency thành công",
+  };
+};
+
 module.exports = {
   getAllAgency,
   getBookingByAgency,
   createOpeningForSalesDetail,
+  createAgency,
+  getAgencyById,
+  updateAgency,
+  deleteAgency,
 };
