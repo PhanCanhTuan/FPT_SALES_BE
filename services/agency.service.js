@@ -27,13 +27,16 @@ API - Lợi
 2. Thêm property cho bảng OpeningForSalesDetail
 - Check xem booking đó phải khác isSelected !== true thì mới được thêm vào 
 - Check xem là có bảng openingForSalesDetail thì báo lỗi
-
+- Thêm số đợt thanh toán, và tạo ra số paymentProcess tương ứng
+- Xem agency đó có thuộc về project đó không
 */
-const createOpeningForSalesDetail = async (
+const createOpeningForSalesDetail = async ({
+  AgencyId,
   OpeningForSalesId,
   PropertyId,
-  BookingId
-) => {
+  BookingId,
+  NumberInstallments,
+}) => {
   // Kiểm tra xem có propery đó không
   const property = await db.PropertyModel.findByPk(PropertyId);
   if (!property) {
@@ -85,6 +88,17 @@ const createOpeningForSalesDetail = async (
     };
   }
 
+  // Kiểm tra xem là angency đó có thuộc về project đó không
+  const agencyProject = await db.AgencyProjectModel.findOne({
+    AgencyId: AgencyId,
+  });
+  if (!agencyProject) {
+    return {
+      status: 400,
+      message: "Agency không thuộc về project",
+    };
+  }
+
   const openingForSalesDetail = await db.OpeningForSalesDetailModel.findByPk(
     booking.OpeningForSalesDetailId
   );
@@ -110,6 +124,14 @@ const createOpeningForSalesDetail = async (
     };
   }
 
+  // Kiểm tra nếu trạng thái booking isSlected = true thì không thể thêm vào đợt mở bán
+  if (booking.IsSelected === true) {
+    return {
+      status: 400,
+      message: "Booking đã được chọn",
+    };
+  }
+
   const NewOpeningForSalesDetail = await db.OpeningForSalesDetailModel.create({
     OpeningForSalesId: OpeningForSalesId,
     PropertyId: PropertyId,
@@ -123,6 +145,27 @@ const createOpeningForSalesDetail = async (
     },
     { where: { BookingId: BookingId } }
   );
+
+  // Tạo ra số paymentProcess tương ứng
+  const paymentProcess = await db.PaymentProcessModel.create({
+    BookingId: BookingId,
+    TotalAmount: property.Price,
+    NumberInstallments: NumberInstallments,
+    PaymentDate: new Date(),
+    Description: "Không có ghi chú",
+    Status: "Not Yet Paid",
+  });
+
+  // Tạo ra số paymentProcessDetail tương ứng
+  for (let i = 1; i <= NumberInstallments; i++) {
+    await db.PaymentProcessDetailModel.create({
+      PaymentProcessId: paymentProcess.PaymentProcessId,
+      Time: i,
+      Amount: property.Price / NumberInstallments,
+      Status: "Not Yet Paid",
+      Description: "Không có ghi chú",
+    });
+  }
 
   return {
     status: 201,

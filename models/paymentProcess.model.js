@@ -17,8 +17,16 @@ module.exports = (sequelize) => {
         type: DataTypes.DATE,
         allowNull: true,
       },
-      Amount: {
+      TotalAmount: {
         type: DataTypes.DECIMAL(18, 2),
+        allowNull: true,
+      },
+      NumberInstallments: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      Status: {
+        type: DataTypes.STRING,
         allowNull: true,
       },
       Description: {
