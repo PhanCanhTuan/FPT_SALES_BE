@@ -514,6 +514,20 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "OpeningForSales",
+			"item": [
+				{
+					"name": "Lấy thông tin các đợt mở bán của dự án theo ProjectId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/openingForSales/3"
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
