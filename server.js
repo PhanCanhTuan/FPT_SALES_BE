@@ -16,6 +16,10 @@ app.use("/api/booking", require("./controllers/booking.controller"));
 app.use("/api/project", require("./controllers/project.controller"));
 app.use("/api/investor", require("./controllers/investor.controller"));
 app.use("/api/property", require("./controllers/property.controller"));
+app.use(
+  "/api/openingForSales",
+  require("./controllers/openingForSales.controller")
+);
 
 const port = process.env.PORT || 3000;
 
