@@ -204,41 +204,60 @@ const closeOpeningForSales = async (OpeningForSalesId) => {
 };
 
 // Tạo mới Agency
-const createAgency = async ({ UserId, Name, Email, PhoneNumber }) => {
-  const user = await db.UserModel.findByPk(UserId);
-  if (!user) {
-    return {
-      status: 404,
-      message: "Không tìm thấy người dùng",
-    };
-  }
-  const agencies = await db.AgencyModel.findAll();
-  if (agencies !== undefined && agencies.length > 0) {
-    for (const agency of agencies) {
-      if (agency.dataValues.Email === Email) {
-        return {
-          status: 400,
-          message: "Email đã được sử dụng",
-        };
-      }
-      if (agency.dataValues.PhoneNumber === PhoneNumber) {
-        return {
-          status: 400,
-          message: "Số điện thoại đã được sử dụng",
-        };
+const createAgency = async ({
+  Username,
+  Password,
+  Name,
+  Email,
+  PhoneNumber,
+}) => {
+  const [user, created] = await db.UserModel.findOrCreate({
+    where: { Username },
+    defaults: {
+      Username,
+      Password,
+      Role: "agency",
+    },
+  });
+  if (created) {
+    const agencies = await db.AgencyModel.findAll();
+    if (agencies !== undefined && agencies.length > 0) {
+      for (const agency of agencies) {
+        if (agency.dataValues.Email === Email) {
+          await db.UserModel.destroy({ where: { UserId: user.UserId } });
+          return {
+            status: 400,
+            message: "Email đã được sử dụng",
+          };
+        }
+        if (agency.dataValues.PhoneNumber === PhoneNumber) {
+          await db.UserModel.destroy({ where: { UserId: user.UserId } });
+          return {
+            status: 400,
+            message: "Số điện thoại đã được sử dụng",
+          };
+        }
       }
     }
+    const agency = await db.AgencyModel.create({
+      UserId: user.UserId,
+      Name,
+      Email,
+      PhoneNumber,
+    });
+    if (!agency) {
+      await db.UserModel.destroy({ where: { UserId: user.UserId } });
+    }
+    return {
+      status: 201,
+      message: "Tạo agency thành công",
+      data: agency,
+    };
   }
-  const agency = await db.AgencyModel.create({
-    UserId,
-    Name,
-    Email,
-    PhoneNumber,
-  });
+
   return {
-    status: 201,
-    message: "Tạo agency thành công",
-    data: agency,
+    status: 400,
+    message: `Agency với Username ${Username} đã tồn tại`,
   };
 };
 
