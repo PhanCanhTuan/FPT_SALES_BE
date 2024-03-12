@@ -29,6 +29,9 @@ const sequelize = new Sequelize(
 );
 
 const db = {};
+
+db.sequelize = sequelize;
+
 db.UserModel = userModel(sequelize);
 db.CustomerModel = customerModel(sequelize);
 db.InvestorModel = investorModel(sequelize);
