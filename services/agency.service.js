@@ -396,7 +396,6 @@ const deleteAgency = async (AgencyId) => {
     };
   }
 };
-
 module.exports = {
   getAllAgency,
   getBookingByAgency,
