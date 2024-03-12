@@ -247,41 +247,74 @@ const updateAgency = async (AgencyId, { Name, Email, PhoneNumber }) => {
 
 // Xóa Agency
 const deleteAgency = async (AgencyId) => {
-  const agency = await db.AgencyModel.findByPk(AgencyId);
-  if (!agency) {
-    return {
-      status: 404,
-      message: "Không tìm thấy Agency",
-    };
-  }
-  const checkAgencyProjectHaveAgency = await db.AgencyProjectModel.findOne({
-    where: { AgencyId },
-  });
-  if (checkAgencyProjectHaveAgency) {
-    return {
-      status: 400,
-      message: "Tồn tại Agency trong AgencyProject. Không thể xóa!",
-    };
-  }
-  const checkBookingHaveAgency = await db.BookingModel.findOne({
-    where: { AgencyId },
-  });
-  if (checkBookingHaveAgency) {
-    return {
-      status: 400,
-      message: "Tồn tại Agency trong Booking. Không thể xóa",
-    };
-  }
-  // Thực hiện xóa agency
-  await agency.destroy();
+  // Bắt đầu một transaction
+  const transaction = await db.sequelize.transaction();
+  try {
+    const agency = await db.AgencyModel.findByPk(AgencyId, { transaction });
+    if (!agency) {
+      // Rollback transaction nếu có lỗi
+      await transaction.rollback();
 
-  // Trả về thông báo thành công
-  return {
-    status: 200,
-    message: "Đã xóa Agency thành công",
-  };
+      return {
+        status: 404,
+        message: "Không tìm thấy Agency",
+      };
+    }
+
+    // Xóa tất cả các User thuộc về Agency cụ thể
+    await db.UserModel.destroy({
+      where: { UserId: agency.UserId },
+      transaction,
+    });
+
+    const checkAgencyProjectHaveAgency = await db.AgencyProjectModel.findOne({
+      where: { AgencyId },
+      transaction,
+    });
+    if (checkAgencyProjectHaveAgency) {
+      // Rollback transaction nếu có lỗi
+      await transaction.rollback();
+
+      return {
+        status: 400,
+        message: "Tồn tại Agency trong AgencyProject. Không thể xóa!",
+      };
+    }
+    const checkBookingHaveAgency = await db.BookingModel.findOne({
+      where: { AgencyId },
+      transaction,
+    });
+    if (checkBookingHaveAgency) {
+      // Rollback transaction nếu có lỗi
+      await transaction.rollback();
+
+      return {
+        status: 400,
+        message: "Tồn tại Agency trong Booking. Không thể xóa",
+      };
+    }
+    // Thực hiện xóa agency
+    await agency.destroy({ transaction });
+
+    // Commit transaction nếu mọi thứ diễn ra thành công
+    await transaction.commit();
+
+    // Trả về thông báo thành công
+    return {
+      status: 200,
+      message: "Đã xóa Agency thành công",
+    };
+  } catch (error) {
+    // Rollback transaction nếu có lỗi
+    await transaction.rollback();
+
+    // Trả về thông báo lỗi
+    return {
+      status: 500,
+      message: "Đã xảy ra lỗi khi xóa Agency: " + error.message,
+    };
+  }
 };
-
 module.exports = {
   getAllAgency,
   getBookingByAgency,
