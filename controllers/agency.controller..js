@@ -98,4 +98,18 @@ router.delete("/:AgencyId", async (req, res) => {
   }
 });
 
+// Chuyển trạng thái Status của Agency
+router.put("/change-status/:AgencyId", async (req, res) => {
+  try {
+    var response = await agencyService.changeStatusAgency(
+      req.params.AgencyId,
+      req.body.Status
+    );
+    res.status(response.status).json(response);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ statusCode: 500, error: "Something went wrong" });
+  }
+});
+
 module.exports = router;

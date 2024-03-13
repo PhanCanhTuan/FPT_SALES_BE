@@ -396,6 +396,44 @@ const deleteAgency = async (AgencyId) => {
     };
   }
 };
+
+/*
+API - Lợi: Chuyển đổi Status của Agency từ Active sang Inactive, và ngược lại
+*/
+const changeStatusAgency = async (AgencyId) => {
+  const agency = await db.AgencyModel.findByPk(AgencyId);
+  if (!agency) {
+    return {
+      status: 404,
+      message: "Không tìm thấy Agency",
+    };
+  }
+
+  // Nếu trạng thái hiện tại là Active thì chuyển sang Inactive
+  if (agency.Status === "Active") {
+    agency.Status = "Inactive";
+    await agency.save();
+    return {
+      status: 200,
+      message:
+        "Chuyển đổi trạng thái Agency thành công, trạng thái hiện tại là Inactive",
+    };
+  } else if (agency.Status === "Inactive") {
+    agency.Status = "Active";
+    await agency.save();
+    return {
+      status: 200,
+      message:
+        "Chuyển đổi trạng thái Agency thành công, trạng thái hiện tại là Active",
+    };
+  }
+
+  return {
+    status: 400,
+    message: "Chuyển đổi trạng thái Agency không thành công",
+  };
+};
+
 module.exports = {
   getAllAgency,
   getBookingByAgency,
@@ -405,4 +443,5 @@ module.exports = {
   getAgencyById,
   updateAgency,
   deleteAgency,
+  changeStatusAgency,
 };

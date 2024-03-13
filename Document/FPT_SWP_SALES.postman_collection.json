@@ -95,7 +95,7 @@
 					"request": {
 						"method": "PUT",
 						"header": [],
-						"url": "{{base_url}}/api/booking/approve/4"
+						"url": "{{base_url}}/api/booking/approve/5"
 					},
 					"response": []
 				},
@@ -118,7 +118,7 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "Lấy danh sách booking hiện có",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -132,6 +132,15 @@
 						"method": "PUT",
 						"header": [],
 						"url": "{{base_url}}/api/booking/reject/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Hủy Booking khi trạng thái là Approved",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": "{{base_url}}/api/booking/reject-approved/5"
 					},
 					"response": []
 				}
@@ -309,6 +318,15 @@
 							]
 						},
 						"url": "{{base_url}}/api/agency/close-opening-for-sales"
+					},
+					"response": []
+				},
+				{
+					"name": "Chuyển đổi trạng thái của Agency",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": "{{base_url}}/api/agency/change-status/1"
 					},
 					"response": []
 				}

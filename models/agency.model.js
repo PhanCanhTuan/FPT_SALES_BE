@@ -25,6 +25,10 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING(20),
         allowNull: true,
       },
+      Status: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+      },
     },
     {
       freezeTableName: true,
