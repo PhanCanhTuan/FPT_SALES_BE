@@ -244,6 +244,7 @@ const createAgency = async ({
       Name,
       Email,
       PhoneNumber,
+      Status: "Active",
     });
     if (!agency) {
       await db.UserModel.destroy({ where: { UserId: user.UserId } });
