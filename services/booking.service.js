@@ -227,6 +227,36 @@ const rejectBooking = async (bookingId) => {
   };
 };
 
+/*
+Lợi - API Rejected Booking With status "Approved" -> "Rejected"
+*/
+const rejectApprovedBooking = async (bookingId) => {
+  const booking = await db.BookingModel.findByPk(bookingId);
+  if (!booking) {
+    return {
+      status: 404,
+      mes: "Booking not found",
+      data: null,
+    };
+  }
+
+  //  Nếu là trạng thái là "Approved" thì trả về đổi trạng thái thành "Rejected"
+  if (booking.Status === "Approved" && booking.IsSelected === false) {
+    booking.Status = "Rejected";
+    await booking.save();
+    return {
+      status: 200,
+      mes: "Reject booking successful",
+      data: null,
+    };
+  }
+  return {
+    status: 400,
+    mes: "Booking is not approved or is selected",
+    data: null,
+  };
+};
+
 module.exports = {
   depositProject,
   getBookingPedding,
@@ -235,4 +265,5 @@ module.exports = {
   getBookingApproved,
   getAllBooking,
   rejectBooking,
+  rejectApprovedBooking,
 };
