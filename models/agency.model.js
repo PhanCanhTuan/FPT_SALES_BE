@@ -25,6 +25,11 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING(20),
         allowNull: true,
       },
+      Status: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        default: true,
+      },
     },
     {
       freezeTableName: true,
