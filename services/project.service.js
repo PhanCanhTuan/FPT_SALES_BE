@@ -95,7 +95,9 @@ const createProject = async ({
     !NumberOfShops ||
     !LandArea ||
     !ConstructionDensity ||
-    !Status
+    !Status ||
+    !StartDate ||
+    !EndDate
   ) {
     return {
       status: 400,
