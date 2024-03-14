@@ -89,15 +89,15 @@ const createOpeningForSalesDetail = async ({
   }
 
   // Kiểm tra xem là angency đó có thuộc về project đó không
-  const agencyProject = await db.AgencyProjectModel.findOne({
-    AgencyId: AgencyId,
-  });
-  if (!agencyProject) {
-    return {
-      status: 400,
-      message: "Agency không thuộc về project",
-    };
-  }
+  // const agencyProject = await db.AgencyProjectModel.findOne({
+  //   AgencyId: AgencyId,
+  // });
+  // if (!agencyProject) {
+  //   return {
+  //     status: 400,
+  //     message: "Agency không thuộc về project",
+  //   };
+  // }
 
   const openingForSalesDetail = await db.OpeningForSalesDetailModel.findByPk(
     booking.OpeningForSalesDetailId
