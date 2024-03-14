@@ -20,6 +20,10 @@ app.use(
   "/api/openingForSales",
   require("./controllers/openingForSales.controller")
 );
+app.use(
+  "/api/paymentForSales",
+  require("./controllers/paymentForSales.controller")
+);
 
 const port = process.env.PORT || 3000;
 
