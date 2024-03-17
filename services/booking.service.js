@@ -257,6 +257,50 @@ const rejectApprovedBooking = async (bookingId) => {
   };
 };
 
+// Lấy ra các paymentOption của một booking từ bảng PaymentProcess
+const getPaymentOptionByBooking = async (bookingId) => {
+  const paymentProcess = await db.PaymentProcessModel.findOne({
+    where: { BookingId: bookingId },
+  });
+  if (!paymentProcess) {
+    return {
+      status: 404,
+      mes: "Không tìm thấy đợt trả nợ",
+    };
+  }
+
+  // Lấy ra được Booking và đi tìm Project
+  const booking = await db.BookingModel.findByPk(bookingId);
+  const project = await db.ProjectModel.findByPk(booking.ProjectId);
+  if (!project) {
+    return {
+      status: 404,
+      mes: "Không tìm thấy dự án",
+    };
+  }
+
+  // Lấy được ProjectId, và ở bảng paymentProcess có paymentMethod rồi
+  // Lấy ra phương thức thanh toán của dự án đó
+  const paymentOptions = await db.PaymentOptionForProjectModel.findAll({
+    where: { ProjectId: project.ProjectId },
+    include: db.PaymentOptionModel,
+  });
+
+  // Và filter theo paymentMethod của paymentProcess
+  const paymentOptionsGroupByMethod = {};
+  for (const option of paymentOptions) {
+    if (!paymentOptionsGroupByMethod[option.PaymentMethod]) {
+      paymentOptionsGroupByMethod[option.PaymentMethod] = [];
+    }
+    paymentOptionsGroupByMethod[option.PaymentMethod].push(option);
+  }
+
+  return {
+    status: 200,
+    data: paymentOptionsGroupByMethod,
+  };
+};
+
 module.exports = {
   depositProject,
   getBookingPedding,
@@ -266,4 +310,5 @@ module.exports = {
   getAllBooking,
   rejectBooking,
   rejectApprovedBooking,
+  getPaymentOptionByBooking,
 };

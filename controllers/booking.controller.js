@@ -101,4 +101,17 @@ router.put("/reject-approved/:bookingId", async (req, res) => {
   }
 });
 
+// getPaymentOptionByBooking
+router.get("/payment-option/:bookingId", async (req, res) => {
+  try {
+    var response = await bookingService.getPaymentOptionByBooking(
+      req.params.bookingId
+    );
+    res.status(response.status).json(response);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ statusCode: 500, error: "Something went wrong" });
+  }
+});
+
 module.exports = router;

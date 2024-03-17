@@ -33,7 +33,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{base_url}}/api/customer/debt/4"
+						"url": "{{base_url}}/api/customer/debt/1030"
 					},
 					"response": []
 				}
@@ -141,6 +141,15 @@
 						"method": "PUT",
 						"header": [],
 						"url": "{{base_url}}/api/booking/reject-approved/5"
+					},
+					"response": []
+				},
+				{
+					"name": "Lấy ra phương thức thanh toán của BookingId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/booking/payment-option/1030"
 					},
 					"response": []
 				}
