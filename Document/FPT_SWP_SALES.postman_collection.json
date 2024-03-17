@@ -476,7 +476,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"projectId\": 3,\r\n  \"paymentOptions\": [\r\n    {\r\n      \"batch\": 1,\r\n      \"date\": \"2024-04-01\",\r\n      \"note\": \"Thanh toán đợt 1\"\r\n    },\r\n    {\r\n      \"batch\": 2,\r\n      \"date\": \"2024-05-01\",\r\n      \"note\": \"Thanh toán đợt 2\"\r\n    },\r\n    {\r\n      \"batch\": 3,\r\n      \"date\": \"2024-06-01\",\r\n      \"note\": \"Thanh toán đợt 3\"\r\n    }\r\n  ]\r\n}\r\n",
+							"raw": "{\r\n  \"projectId\": 3,\r\n  \"paymentMethod\": 4,\r\n  \"paymentOptions\": [\r\n    {\r\n      \"batch\": 1,\r\n      \"date\": \"2024-04-01\",\r\n      \"note\": \"Thanh toán đợt 1\",\r\n      \"percentage\": 10\r\n    },\r\n    {\r\n      \"batch\": 2,\r\n      \"date\": \"2024-05-01\",\r\n      \"note\": \"Thanh toán đợt 2\",\r\n       \"percentage\": 30\r\n    },\r\n    {\r\n      \"batch\": 3,\r\n      \"date\": \"2024-06-01\",\r\n      \"note\": \"Thanh toán đợt 3\",\r\n       \"percentage\": 60\r\n    }\r\n  ]\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"

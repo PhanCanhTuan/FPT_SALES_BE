@@ -22,6 +22,7 @@ router.post("/payment-option-for-project", async (req, res) => {
   try {
     var response = await investorService.createPaymentOptionForProject(
       req.body.projectId,
+      req.body.paymentMethod,
       req.body.paymentOptions
     );
     res.status(response.status).json(response);

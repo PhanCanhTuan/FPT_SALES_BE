@@ -13,6 +13,10 @@ module.exports = (sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
+      Percentage: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       Date: {
         type: DataTypes.STRING(255),
         allowNull: true,

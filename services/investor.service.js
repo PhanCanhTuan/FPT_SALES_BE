@@ -47,7 +47,19 @@ const createOpeningForSale = async (projectId, startTime, endTime) => {
 
 // Investor tạo hàng loạt các phương án thanh toán cho một dự án
 // Ban đầu sẽ tạo trước các phương án option và sẽ thêm vào project
-const createPaymentOptionForProject = async (projectId, paymentOptions) => {
+const createPaymentOptionForProject = async (
+  projectId,
+  paymentMethod,
+  paymentOptions
+) => {
+  // Kiểm tra xem nếu paymentMethod không có thì return lỗi
+  if (!paymentMethod) {
+    return {
+      status: 400,
+      message: "Yêu cầu nhập phương thức thanh toán",
+    };
+  }
+
   const project = await db.ProjectModel.findByPk(projectId);
   if (!project) {
     return {
@@ -56,16 +68,29 @@ const createPaymentOptionForProject = async (projectId, paymentOptions) => {
     };
   }
 
+  // Kiểm tra xem nếu đã tồn tại phương thức thanh toán rồi thì không cho tạo
+  const existedPaymentOption = await db.PaymentOptionForProjectModel.findOne({
+    where: { ProjectId: projectId, PaymentMethod: paymentMethod },
+  });
+  if (existedPaymentOption) {
+    return {
+      status: 400,
+      message: "Phương thức thanh toán đã tồn tại",
+    };
+  }
+
   // Tạo mới phương án thanh toán
   for (const option of paymentOptions) {
-    await db.PaymentOptionModel.create({
+    const temp = await db.PaymentOptionModel.create({
       Batch: option.batch,
       Date: option.date,
       Note: option.note,
+      Percentage: option.percentage,
     });
     await db.PaymentOptionForProjectModel.create({
       ProjectId: projectId,
-      PaymentOptionId: option.batch,
+      PaymentMethod: paymentMethod,
+      PaymentOptionId: temp.PaymentOptionId,
     });
   }
 
@@ -75,7 +100,7 @@ const createPaymentOptionForProject = async (projectId, paymentOptions) => {
   };
 };
 
-// Lấy danh sách tất cả phương án thanh toán của một dự án
+// Lấy danh sách tất cả phương án thanh toán của một dự án theo từng phương thức thanh toán
 const getPaymentOptionsForProject = async (projectId) => {
   const project = await db.ProjectModel.findByPk(projectId);
   if (!project) {
@@ -90,9 +115,18 @@ const getPaymentOptionsForProject = async (projectId) => {
     include: db.PaymentOptionModel,
   });
 
+  // Gôm các phương án thanh toán theo từng phương thức thanh toán
+  const paymentOptionsGroupByMethod = {};
+  for (const option of paymentOptions) {
+    if (!paymentOptionsGroupByMethod[option.PaymentMethod]) {
+      paymentOptionsGroupByMethod[option.PaymentMethod] = [];
+    }
+    paymentOptionsGroupByMethod[option.PaymentMethod].push(option);
+  }
+
   return {
     status: 200,
-    paymentOptions,
+    data: paymentOptionsGroupByMethod,
   };
 };
 

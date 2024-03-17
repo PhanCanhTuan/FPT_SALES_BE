@@ -9,6 +9,12 @@ module.exports = (sequelize) => {
         primaryKey: true,
         autoIncrement: true,
       },
+      // Thể hiện phương thức thanh toán
+      PaymentMethod: {
+        // Tên mới của trường bạn muốn thêm
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
       ProjectId: {
         type: DataTypes.INTEGER,
         allowNull: false,
