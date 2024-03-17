@@ -21,7 +21,7 @@ module.exports = (sequelize) => {
         type: DataTypes.DECIMAL(18, 2),
         allowNull: true,
       },
-      NumberInstallments: {
+      PaymentMethod: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },

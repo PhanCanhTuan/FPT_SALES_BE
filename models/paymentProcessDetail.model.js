@@ -17,13 +17,10 @@ module.exports = (sequelize) => {
         type: DataTypes.DATE,
         allowNull: true,
       },
-      Time: {
+      // PaymentOptionId
+      PaymentOptionId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-      },
-      Amount: {
-        type: DataTypes.DECIMAL(18, 2),
-        allowNull: true,
       },
       Status: {
         type: DataTypes.STRING,

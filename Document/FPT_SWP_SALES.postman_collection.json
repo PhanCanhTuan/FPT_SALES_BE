@@ -95,7 +95,7 @@
 					"request": {
 						"method": "PUT",
 						"header": [],
-						"url": "{{base_url}}/api/booking/approve/5"
+						"url": "{{base_url}}/api/booking/approve/1030"
 					},
 					"response": []
 				},
@@ -104,7 +104,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{base_url}}/api/booking/1"
+						"url": "{{base_url}}/api/booking/4"
 					},
 					"response": []
 				},
@@ -288,12 +288,12 @@
 								},
 								{
 									"key": "PropertyId",
-									"value": "4",
+									"value": "1019",
 									"type": "text"
 								},
 								{
 									"key": "BookingId",
-									"value": "4",
+									"value": "1030",
 									"type": "text"
 								},
 								{
@@ -302,7 +302,7 @@
 									"type": "text"
 								},
 								{
-									"key": "NumberInstallments",
+									"key": "PaymentMethod",
 									"value": "3",
 									"type": "text"
 								}

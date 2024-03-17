@@ -35,7 +35,7 @@ const createOpeningForSalesDetail = async ({
   OpeningForSalesId,
   PropertyId,
   BookingId,
-  NumberInstallments,
+  PaymentMethod,
 }) => {
   // Kiểm tra xem có propery đó không
   const property = await db.PropertyModel.findByPk(PropertyId);
@@ -132,10 +132,57 @@ const createOpeningForSalesDetail = async ({
     };
   }
 
+  // Kiểm tra xem là paymentMethod có tồn tại và paymentMethod đó có thuộc về project đó không ?. Ở bảng PaymentMethodForProject
+  const existedPaymentOption = await db.PaymentOptionForProjectModel.findOne({
+    where: { ProjectId: booking.ProjectId, PaymentMethod: PaymentMethod },
+  });
+  if (!existedPaymentOption) {
+    return {
+      status: 400,
+      message:
+        "Phương thức thanh toán không tồn tại hoặc không thuộc về project",
+    };
+  }
+
   const NewOpeningForSalesDetail = await db.OpeningForSalesDetailModel.create({
     OpeningForSalesId: OpeningForSalesId,
     PropertyId: PropertyId,
   });
+
+  const paymentProcess = await db.PaymentProcessModel.create({
+    BookingId: BookingId,
+    TotalAmount: property.Price,
+    PaymentMethod: PaymentMethod,
+    PaymentDate: new Date(),
+    Description: "Không có ghi chú",
+    Status: "Not Yet Paid",
+  });
+
+  // Tạo ra số paymentProcess tương ứng với option đó
+  const paymentOption = await db.PaymentOptionForProjectModel.findAll({
+    where: { ProjectId: booking.ProjectId },
+  });
+
+  // Gôm các phương án thanh toán theo từng phương thức thanh toán
+  const paymentOptionsGroupByMethod = [];
+  for (const option of paymentOption) {
+    if (!paymentOptionsGroupByMethod[option.PaymentMethod]) {
+      paymentOptionsGroupByMethod[option.PaymentMethod] = [];
+    }
+    paymentOptionsGroupByMethod[option.PaymentMethod].push(option);
+  }
+
+  // Filter ra phương thức thanh toán với paymentMethod, so sánh
+  const paymentOptions = paymentOptionsGroupByMethod[PaymentMethod];
+
+  // Tạo ra số paymentProcessDetail tương ứng
+  for (const option of paymentOptions) {
+    await db.PaymentProcessDetailModel.create({
+      PaymentProcessId: paymentProcess.PaymentProcessId,
+      PaymentOptionId: option.PaymentOptionId,
+      Status: "Unpaid",
+    });
+  }
 
   // Update trạng thái của booking isSlected = true
   await db.BookingModel.update(
@@ -145,27 +192,6 @@ const createOpeningForSalesDetail = async ({
     },
     { where: { BookingId: BookingId } }
   );
-
-  // Tạo ra số paymentProcess tương ứng
-  const paymentProcess = await db.PaymentProcessModel.create({
-    BookingId: BookingId,
-    TotalAmount: property.Price,
-    NumberInstallments: NumberInstallments,
-    PaymentDate: new Date(),
-    Description: "Không có ghi chú",
-    Status: "Not Yet Paid",
-  });
-
-  // Tạo ra số paymentProcessDetail tương ứng
-  for (let i = 1; i <= NumberInstallments; i++) {
-    await db.PaymentProcessDetailModel.create({
-      PaymentProcessId: paymentProcess.PaymentProcessId,
-      Time: i,
-      Amount: property.Price / NumberInstallments,
-      Status: "Not Yet Paid",
-      Description: "Không có ghi chú",
-    });
-  }
 
   return {
     status: 201,
