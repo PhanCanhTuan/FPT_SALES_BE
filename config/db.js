@@ -11,6 +11,8 @@ const bookingModel = require("../models/booking.model");
 const paymentProcess = require("../models/paymentProcess.model");
 const paymentProcessDetail = require("../models/paymentProcessDetail.model");
 const agencyProjectModel = require("../models/agencyProject.model");
+const paymentOptionModel = require("../models/paymentOption.model");
+const PaymentOptionForProjectModel = require("../models/paymentOptionForProject.model");
 
 require("dotenv").config();
 
@@ -44,6 +46,8 @@ db.BookingModel = bookingModel(sequelize);
 db.PaymentProcessModel = paymentProcess(sequelize);
 db.PaymentProcessDetailModel = paymentProcessDetail(sequelize);
 db.AgencyProjectModel = agencyProjectModel(sequelize);
+db.PaymentOptionModel = paymentOptionModel(sequelize);
+db.PaymentOptionForProjectModel = PaymentOptionForProjectModel(sequelize);
 
 // sync all models with database
 sequelize.sync({ alter: true });
