@@ -61,6 +61,7 @@ const getDebtByBooking = async (bookingId) => {
 
   const response = await db.PaymentProcessDetailModel.findAll({
     where: { PaymentProcessId: paymentProcess.PaymentProcessId },
+    include: [db.PaymentProcessModel],
   });
 
   if (!response) {

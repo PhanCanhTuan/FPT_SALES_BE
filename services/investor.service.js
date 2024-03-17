@@ -130,6 +130,67 @@ const getPaymentOptionsForProject = async (projectId) => {
   };
 };
 
+// Cập nhật thông tin phương án thanh toán theo từng phương thức thanh toán
+// Và kiểm tra xem phương án đã được sử dụng chưa
+// Nếu sử dụng rồi thì không cho update, sử dụng rồi ở đây tức là paymentMethod đã được sử dụng trong bảng PaymentProcess
+// Nếu chưa sử dụng thì cho update
+const updatePaymentOptionForProject = async (
+  projectId,
+  paymentMethod,
+  paymentOptions
+) => {
+  const project = await db.ProjectModel.findByPk(projectId);
+  if (!project) {
+    return {
+      status: 404,
+      message: "Không tìm thấy dự án",
+    };
+  }
+
+  const existedPaymentOption = await db.PaymentOptionForProjectModel.findOne({
+    where: { ProjectId: projectId, PaymentMethod: paymentMethod },
+  });
+  if (!existedPaymentOption) {
+    return {
+      status: 404,
+      message: "Không tìm thấy phương thức thanh toán",
+    };
+  }
+
+  // Kiểm tra xem phương án thanh toán đã được sử dụng chưa
+  const paymentProcess = await db.PaymentProcessModel.findOne({
+    where: { PaymentOptionId: existedPaymentOption.PaymentOptionId },
+  });
+  if (paymentProcess) {
+    return {
+      status: 400,
+      message: "Phương án thanh toán đã được sử dụng",
+    };
+  }
+
+  // Cập nhật phương án thanh toán
+  for (const option of paymentOptions) {
+    const temp = await db.PaymentOptionModel.create({
+      Batch: option.batch,
+      Date: option.date,
+      Note: option.note,
+      Percentage: option.percentage,
+    });
+    await db.PaymentOptionForProjectModel.update(
+      {
+        PaymentOptionId: temp.PaymentOptionId,
+      },
+      {
+        where: { ProjectId: projectId, PaymentMethod: paymentMethod },
+      }
+    );
+  }
+
+  return {
+    status: 200,
+    message: "Cập nhật phương án thanh toán thành công",
+  };
+};
 module.exports = {
   createOpeningForSale,
   createPaymentOptionForProject,
