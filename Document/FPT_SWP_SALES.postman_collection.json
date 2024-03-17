@@ -233,6 +233,16 @@
 									"key": "Status",
 									"value": "Planed",
 									"type": "text"
+								},
+								{
+									"key": "StartDate",
+									"value": "2024-03-01T17:53:32.1450000+00:00",
+									"type": "text"
+								},
+								{
+									"key": "EndDate",
+									"value": "2024-03-01T17:53:32.1450000+00:00",
+									"type": "text"
 								}
 							]
 						},
@@ -456,6 +466,33 @@
 							]
 						},
 						"url": "{{base_url}}/api/investor/opening-for-sale"
+					},
+					"response": []
+				},
+				{
+					"name": "Tạo hàng loạt các phương án thanh toán cho một dự án",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"projectId\": 3,\r\n  \"paymentOptions\": [\r\n    {\r\n      \"batch\": 1,\r\n      \"date\": \"2024-04-01\",\r\n      \"note\": \"Thanh toán đợt 1\"\r\n    },\r\n    {\r\n      \"batch\": 2,\r\n      \"date\": \"2024-05-01\",\r\n      \"note\": \"Thanh toán đợt 2\"\r\n    },\r\n    {\r\n      \"batch\": 3,\r\n      \"date\": \"2024-06-01\",\r\n      \"note\": \"Thanh toán đợt 3\"\r\n    }\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/investor/payment-option-for-project"
+					},
+					"response": []
+				},
+				{
+					"name": "Lấy danh sách các phương án thanh toán của dự án",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/investor/payment-options/3"
 					},
 					"response": []
 				}
