@@ -191,8 +191,70 @@ const updatePaymentOptionForProject = async (
     message: "Cập nhật phương án thanh toán thành công",
   };
 };
+
+// Cập nhật phương thức thanh toán theo PaymentOptionId
+// Và ở đây kiểm tra xem ở bảng PaymentProcess xem có sử dụng chưa
+// Không cần biết method nào, chỉ cần biết PaymentOptionId
+// Update các field như: Date, Note, Percentage
+const updatePaymentOption = async (paymentOptionId, paymentOption) => {
+  if (!paymentOptionId) {
+    return {
+      status: 400,
+      message: "Yêu cầu nhập PaymentOptionId",
+    };
+  }
+
+  // Kiểm tra xem có các field: Date, Note, Percentage
+  if (!paymentOption.date || !paymentOption.note || !paymentOption.percentage) {
+    return {
+      status: 400,
+      message: "Yêu cầu nhập đầy đủ thông tin",
+    };
+  }
+
+  // Và nếu có Batch thì báo sai
+  if (paymentOption.batch) {
+    return {
+      status: 400,
+      message: "Không thể cập nhật Batch",
+    };
+  }
+
+  const existedPaymentOption = await db.PaymentOptionModel.findByPk(
+    paymentOptionId
+  );
+  if (!existedPaymentOption) {
+    return {
+      status: 404,
+      message: "Không tìm thấy phương án thanh toán",
+    };
+  }
+
+  // Kiểm tra xem phương án thanh toán đã được sử dụng chưa
+  const paymentProcess = await db.PaymentProcessDetailModel.findOne({
+    where: { PaymentOptionId: paymentOptionId },
+  });
+  if (paymentProcess) {
+    return {
+      status: 400,
+      message: "Phương án thanh toán đã được sử dụng",
+    };
+  }
+
+  // Cập nhật phương án thanh toán
+  await db.PaymentOptionModel.update(paymentOption, {
+    where: { PaymentOptionId: paymentOptionId },
+  });
+
+  return {
+    status: 200,
+    message: "Cập nhật phương án thanh toán thành công",
+  };
+};
+
 module.exports = {
   createOpeningForSale,
   createPaymentOptionForProject,
   getPaymentOptionsForProject,
+  updatePaymentOption,
 };

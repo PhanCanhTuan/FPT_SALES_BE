@@ -45,4 +45,17 @@ router.get("/payment-options/:projectId", async (req, res) => {
   }
 });
 
+// 4. Cập nhật phương án thanh toán
+router.put("/payment-option/:paymentOptionId", async (req, res) => {
+  try {
+    var response = await investorService.updatePaymentOption(
+      req.params.paymentOptionId,
+      req.body
+    );
+    res.status(response.status).json(response);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ statusCode: 500, error: "Something went wrong" });
+  }
+});
 module.exports = router;

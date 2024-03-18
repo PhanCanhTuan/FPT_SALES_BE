@@ -504,6 +504,24 @@
 						"url": "{{base_url}}/api/investor/payment-options/3"
 					},
 					"response": []
+				},
+				{
+					"name": "Cập nhật phương thức thanh toán",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"batch\": 2,\r\n      \"date\": \"2024-04-01\",\r\n      \"note\": \"Thanh toán đợt 1\",\r\n      \"percentage\": 10\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/investor/payment-option/1"
+					},
+					"response": []
 				}
 			]
 		},
