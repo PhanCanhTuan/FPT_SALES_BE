@@ -252,9 +252,67 @@ const updatePaymentOption = async (paymentOptionId, paymentOption) => {
   };
 };
 
+// Xóa paymentMethod theo paymentMethod
+// Và kiểm tra xem paymentMethod đã được sử dụng chưa
+// Nếu đã sử dụng thì không cho xóa
+// Nếu chưa sử dụng thì sẽ loop qua các paymentOptionId và xóa hết các paymentOptionId đó
+const deletePaymentOption = async (projectId, paymentMethod) => {
+  const project = await db.ProjectModel.findByPk(projectId);
+  if (!project) {
+    return {
+      status: 404,
+      message: "Không tìm thấy dự án",
+    };
+  }
+
+  const existedPaymentOption = await db.PaymentOptionForProjectModel.findOne({
+    where: { ProjectId: projectId, PaymentMethod: paymentMethod },
+  });
+  if (!existedPaymentOption) {
+    return {
+      status: 404,
+      message: "Không tìm thấy phương thức thanh toán",
+    };
+  }
+
+  // Kiểm tra xem phương thức thanh toán đã được sử dụng chưa
+  const paymentProcess = await db.PaymentProcessModel.findOne({
+    where: { PaymentMethod: existedPaymentOption.PaymentMethod },
+  });
+  if (paymentProcess) {
+    return {
+      status: 400,
+      message: "Phương thức thanh toán đã được sử dụng",
+    };
+  }
+
+  // Lấy ra các paymentOptionId trong PaymentOptionForProject theo paymentMethod
+  const paymentOptions = await db.PaymentOptionForProjectModel.findAll({
+    where: { ProjectId: projectId, PaymentMethod: paymentMethod },
+  });
+
+  // Xóa phương án thanh toán
+  await db.PaymentOptionForProjectModel.destroy({
+    where: { ProjectId: projectId, PaymentMethod: paymentMethod },
+  });
+
+  // Xóa các paymentOptionId
+  for (const option of paymentOptions) {
+    await db.PaymentOptionModel.destroy({
+      where: { PaymentOptionId: option.PaymentOptionId },
+    });
+  }
+
+  return {
+    status: 200,
+    message: "Xóa phương án thanh toán thành công",
+  };
+};
+
 module.exports = {
   createOpeningForSale,
   createPaymentOptionForProject,
   getPaymentOptionsForProject,
   updatePaymentOption,
+  deletePaymentOption,
 };

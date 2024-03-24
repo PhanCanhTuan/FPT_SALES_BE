@@ -58,4 +58,18 @@ router.put("/payment-option/:paymentOptionId", async (req, res) => {
     res.status(500).json({ statusCode: 500, error: "Something went wrong" });
   }
 });
+
+// 5. Xóa phương án thanh toán
+router.delete("/payment-option", async (req, res) => {
+  try {
+    var response = await investorService.deletePaymentOption(
+      req.body.projectId,
+      req.body.paymentMethod
+    );
+    res.status(response.status).json(response);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ statusCode: 500, error: "Something went wrong" });
+  }
+});
 module.exports = router;

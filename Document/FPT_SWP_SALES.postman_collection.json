@@ -522,6 +522,30 @@
 						"url": "{{base_url}}/api/investor/payment-option/1"
 					},
 					"response": []
+				},
+				{
+					"name": "Xóa các phương án thanh toán",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "projectId",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "paymentMethod",
+									"value": "3",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{base_url}}/api/investor/payment-option"
+					},
+					"response": []
 				}
 			]
 		},
