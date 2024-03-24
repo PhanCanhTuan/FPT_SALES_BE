@@ -338,6 +338,31 @@ const updateProject = async (projectId, project) => {
   };
 };
 
+// Thay đổi trạng thái của Project thành deleted
+// Nếu không tìm thấy dự án thì trả về lỗi
+const deleteProject = async (projectId) => {
+  const existedProject = await db.ProjectModel.findByPk(projectId);
+  if (!existedProject) {
+    return {
+      status: 404,
+      message: "Không tìm thấy dự án",
+    };
+  }
+
+  // Xóa dự án
+  await db.ProjectModel.update(
+    { Status: "Deleted" },
+    {
+      where: { ProjectId: projectId },
+    }
+  );
+
+  return {
+    status: 200,
+    message: "Xóa dự án thành công",
+  };
+};
+
 module.exports = {
   createOpeningForSale,
   createPaymentOptionForProject,
@@ -345,4 +370,5 @@ module.exports = {
   updatePaymentOption,
   deletePaymentOption,
   updateProject,
+  deleteProject,
 };

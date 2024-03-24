@@ -86,4 +86,15 @@ router.put("/project/:projectId", async (req, res) => {
     res.status(500).json({ statusCode: 500, error: "Something went wrong" });
   }
 });
+
+// 7. Xóa dự án
+router.delete("/project/:projectId", async (req, res) => {
+  try {
+    var response = await investorService.deleteProject(req.params.projectId);
+    res.status(response.status).json(response);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ statusCode: 500, error: "Something went wrong" });
+  }
+});
 module.exports = router;

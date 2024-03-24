@@ -565,6 +565,15 @@
 						"url": "{{base_url}}/api/investor/payment-option"
 					},
 					"response": []
+				},
+				{
+					"name": "Xóa dự án (change Status)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{base_url}}/api/investor/project/3"
+					},
+					"response": []
 				}
 			]
 		},
