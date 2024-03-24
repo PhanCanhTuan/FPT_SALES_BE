@@ -450,6 +450,25 @@
 			"name": "Investor",
 			"item": [
 				{
+					"name": "Cập nhật thông tin Project",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "Name",
+									"value": "Phu My Hung 1",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{base_url}}/api/investor/project/3"
+					},
+					"response": []
+				},
+				{
 					"name": "Tạo đợt mở bán dự án",
 					"request": {
 						"method": "POST",

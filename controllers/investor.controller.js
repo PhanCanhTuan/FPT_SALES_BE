@@ -72,4 +72,18 @@ router.delete("/payment-option", async (req, res) => {
     res.status(500).json({ statusCode: 500, error: "Something went wrong" });
   }
 });
+
+// 6. Cập nhật thông tin Project
+router.put("/project/:projectId", async (req, res) => {
+  try {
+    var response = await investorService.updateProject(
+      req.params.projectId,
+      req.body
+    );
+    res.status(response.status).json(response);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ statusCode: 500, error: "Something went wrong" });
+  }
+});
 module.exports = router;

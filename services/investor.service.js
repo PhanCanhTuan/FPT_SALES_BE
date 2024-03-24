@@ -309,10 +309,40 @@ const deletePaymentOption = async (projectId, paymentMethod) => {
   };
 };
 
+// Cập nhật thông tin cho Project
+// Các thông tin được cập nhật:[Name], [StartDate], [EndDate], [Status],[Location], [Thumbnail], [NumberOfApartments], [NumberOfShops],[LandArea], [ConstructionDensity],[Description]
+// Kiểm tra, truyền thông tin nào thì thay đổi thông tin đó
+// Nếu không có thông tin nào thì không thay đổi
+// Nếu không tìm thấy dự án thì trả về lỗi
+const updateProject = async (projectId, project) => {
+  const existedProject = await db.ProjectModel.findByPk(projectId);
+  if (!existedProject) {
+    return {
+      status: 404,
+      message: "Không tìm thấy dự án",
+    };
+  }
+
+  // Cập nhật thông tin cho Project
+  await db.ProjectModel.update(project, {
+    where: { ProjectId: projectId },
+  });
+
+  // Trả về dữ liệu sau khi cập nhật
+  const updatedProject = await db.ProjectModel.findByPk(projectId);
+
+  return {
+    status: 200,
+    message: "Cập nhật dự án thành công",
+    data: updatedProject,
+  };
+};
+
 module.exports = {
   createOpeningForSale,
   createPaymentOptionForProject,
   getPaymentOptionsForProject,
   updatePaymentOption,
   deletePaymentOption,
+  updateProject,
 };
